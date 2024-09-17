@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, Input, NgModule, AfterContentChecked } from '@angular/core';
+import { Component, Output, EventEmitter, Input, NgModule, OnChanges, DoCheck, OnInit } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
@@ -57,6 +57,7 @@ import { FormsModule } from '@angular/forms';
                 class="div__the_field_of_page_switching_buttons"
             >
                 @if (the_number_of_pages_in_the_list >= 2) {
+
                     <button (click)="changingTheDisplayedListPage(index_of_the_current_page - 1)">Назад</button>
                     @for ( page_number of array_of_page_numbers; track $index ) {
                         <button (click)="changingTheDisplayedListPage($index)">{{ page_number }}</button>
@@ -126,7 +127,7 @@ import { FormsModule } from '@angular/forms';
     `
 })
 
-export class Staff implements OnInit, AfterContentChecked {
+export class Staff implements OnInit {
 
     @Input() updateStaff: boolean = false;
     @Output() onClick = new EventEmitter();
@@ -185,22 +186,23 @@ export class Staff implements OnInit, AfterContentChecked {
     }
 
     changingTheDisplayedListPage(page_number: number) {
-        this.a_visible_list_of_the_satellite_component = this.a_list_divided_into_parts[page_number];
+        if (page_number != -1 && page_number >= 0 ) {
+            console.log(page_number);
+            this.index_of_the_current_page = page_number
+            this.a_visible_list_of_the_satellite_component = this.a_list_divided_into_parts[page_number];
+        }
     }
 
     ngOnInit() {
         this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
             this.dataService.changingEmployeeData(res.body);
             this.a_visible_list_of_the_satellite_component = res.body;
+            this.a_list_divided_into_parts = this.splittingTheListIntoParts(this.a_visible_list_of_the_satellite_component, 14);
+            if ( this.a_list_divided_into_parts.length != 0 ) {
+                this.a_visible_list_of_the_satellite_component = this.a_list_divided_into_parts[this.index_of_the_current_page];
+            }
+            this.the_number_of_pages_in_the_list = this.countingTheNumberOfPagesOfTheOutputList(this.a_list_divided_into_parts);
+            this.creatingAnArrayOfNumbers(this.the_number_of_pages_in_the_list);
         });
-    }
-    
-    ngAfterContentChecked() {
-        this.a_list_divided_into_parts = this.splittingTheListIntoParts(this.a_visible_list_of_the_satellite_component, 14);
-        if ( this.a_list_divided_into_parts.length != 0 ) {
-            this.a_visible_list_of_the_satellite_component = this.a_list_divided_into_parts[this.index_of_the_current_page];
-        }
-        this.the_number_of_pages_in_the_list = this.countingTheNumberOfPagesOfTheOutputList(this.a_list_divided_into_parts);
-        this.creatingAnArrayOfNumbers(this.the_number_of_pages_in_the_list);
     }
 }
