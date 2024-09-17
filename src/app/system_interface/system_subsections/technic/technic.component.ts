@@ -1,24 +1,136 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+
+import { DataService } from '../../../data/data.service';
+import { ChangingTheStateService } from '../../../change/changing-the-state.service';
 
 @Component({
     selector: 'technic',
     standalone: true,
+    imports: [HttpClientModule],
+    providers: [DataService],
     template: `
         <div
             class="div__component_field"
         >
-            <button>Добавить технику</button>
-            <input type="search"/>
+            <div
+                class="div__the_background_of_the_add_button"
+            >
+                <button (click)="onClick.emit('technic')">Добавить технику</button>
+            </div>
+            <div
+                class="div__the_background_of_the_search_field"
+            >
+                <input type="search" placeholder="Поиск"/>
+            </div>
             <table>
-                <tr>
-                    <th>Инв №</th>
-                    <th>Наименование</th>
-                    <th>Тип</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th class="column_1">Инв №</th>
+                        <th class="column_2">Наименование</th>
+                        <th class="column_3">Тип</th>
+                        <th class="column_4"></th>
+                        <th class="column_5"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for ( technic of technicalData; track technic.id ) {
+                        <tr>
+                            <th>{{ technic.id }}</th>
+                            <th>{{ technic.name }}</th>
+                            <th>{{ technic.type }}</th>
+                            <th>
+                                <button>-</button>
+                            </th>
+                            <th>
+                                <button>R</button>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
             </table>
         </div>
     `,
-    styles: ''
+    styles: `
+        .div__component_field {
+            width: 100%;
+            heigth: 100%;
+        }
+        .div__the_background_of_the_add_button {
+            width: 100%;
+            text-align: center;
+
+            padding: 20px 0px 0px 0px;
+        }
+        .div__the_background_of_the_add_button button {
+            padding: 5px 15px 5px 15px;
+            background-color: rgba(0,0,0,0);
+            border: none;
+            outline: 1px solid grey;
+        }
+        .div__the_background_of_the_search_field {
+            width: 100%;
+            padding: 20px 0px 0px 0px;
+            text-align: center;
+        }
+        .div__the_background_of_the_search_field input {
+            width: 70%;
+            padding: 0px 0px 0px 15px;
+        }
+        table {
+            width: 70%;
+
+            border-collapse: collapse;
+            border: 1px solid grey;
+
+            margin-top: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        tr, th {
+            border: 1px solid grey;
+        }
+        .column_1 {
+            width: 8%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_2 {
+            width: 26%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_3 {
+            width: 24%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_4 {
+            width: 5%;
+        }
+        .column_5 {
+            width: 5%;
+        }
+    `
 })
 
-export class Technic {}
+export class Technic implements OnInit {
+
+    technicalData: any = [];
+
+    a_visible_list_of_the_equipment_component: Array<Object> = [];
+
+    @Output() onClick = new EventEmitter();
+
+    constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
+        this.CHTSS.updateComponentTechnic.subscribe(() => {
+            this.ngOnInit();
+        });
+    }
+
+    ngOnInit() {
+        this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+            this.technicalData = res.body;
+            this.dataService.changingTechnologyData(res.body);
+        });
+    }
+}
