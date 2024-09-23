@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { Staff } from './system_subsections/staff/staff.component';
@@ -28,16 +28,16 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
                 class="div__component_visualization_field"
             >
                 @if (VisualizeTheEmployeeComponent) {
-                    <staff></staff>
+                    <staff (onClick)="upCase($event)"></staff>
                 }
                 @if (VisualizeAComponentOfTheTechnique) {
-                    <technic></technic>
+                    <technic (onClick)="upCase($event)"></technic>
                 }
                 @if (VisualizeTheComponentOfTheTypesOfEquipment) {
-                    <type-of-equipment></type-of-equipment>
+                    <type-of-equipment (onClick)="upCase($event)"></type-of-equipment>
                 }
                 @if (VisualizeTheComponentOfEmployeeEquipment) {
-                    <employee-equipment></employee-equipment>
+                    <employee-equipment (onClick)="upCase($event)"></employee-equipment>
                 }
                 @if (VisualizeTheInventoryComponent) {
                     <inventory></inventory>
@@ -45,10 +45,42 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
             </div>
         </div>
     `,
-    styles: '',
+    styles: `
+        .div__system_interface_field {
+            position: relative;
+            display: inline-block;
+            background-color: white;
+            padding: 10px 10px 10px 10px;
+        }
+        .div__button_field {
+            text-align: center;
+        }
+        .div__button_field button {
+            padding: 5px 10px 5px 10px;
+
+            background-color: rgba(0,0,0,0);
+
+            border-top: 1px solid grey;
+            border-bottom: 1px solid grey;
+            border-left: 1px solid grey;
+            border-right: none;
+        }
+        .div__button_field button:last-child {
+            border-right: 1px solid grey;
+        }
+        .div__component_visualization_field {
+            width: 800px;
+            height: 500px;
+            outline: 1px solid grey;
+        }
+    `,
 })
 
 export class SystemInterface {
+
+    @Input() updateComponentStaff: boolean = false;
+    @Output() onClick = new EventEmitter()
+
     VisualizeTheEmployeeComponent = true;
     VisualizeAComponentOfTheTechnique = false;
     VisualizeTheComponentOfTheTypesOfEquipment = false;
@@ -89,5 +121,9 @@ export class SystemInterface {
         this.VisualizeTheComponentOfTheTypesOfEquipment = false;
         this.VisualizeTheComponentOfEmployeeEquipment = false;
         this.VisualizeTheInventoryComponent = true;
+    }
+
+    upCase(modal: string) {
+        this.onClick.emit(modal)
     }
 }
