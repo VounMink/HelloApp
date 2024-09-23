@@ -11,5 +11,15 @@ export class ChangingTheStateService {
   public updateComponentTypeOfEquipment = new BehaviorSubject('false');
   public updateComponentEmployeeEquipment = new BehaviorSubject('false');
 
+  public dataAboutTheRemovalOfAnEmployee = new BehaviorSubject('');
+  public dataOnTheRemovalOfEquipment = new BehaviorSubject('');
+  public dataOnTheRemovalOfTheTypeOfEquipment = new BehaviorSubject('');
+  public dataOnTheRemovalOfTheEmployeeTechnicianBundle = new BehaviorSubject({});
+
+  public employeeEditingData = new BehaviorSubject(0);
+  public informationAboutEditingEquipment = new BehaviorSubject(0);
+  public informationAboutEditingTheTypeOfEquipment = new BehaviorSubject(0);
+  public dataOnEditingTheEmployeeTechnicianBundle = new BehaviorSubject(0);
+
   constructor() { }
 }

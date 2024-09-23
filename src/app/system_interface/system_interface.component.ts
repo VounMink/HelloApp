@@ -18,11 +18,11 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
             <div
                 class="div__button_field"
             >
-                <button (click)=visualizationOfTheEmployeeComponent()>Сотрудники</button>
-                <button (click)=visualizationOfAComponentOfATechnique()>Техника</button>
-                <button (click)=visualizationOfTheComponentOfTheTypesOfEquipment()>Типы техники</button>
-                <button (click)=visualizationOfTheComponentOfEmployeeEquipment()>Техника сотрудников</button>
-                <button (click)=visualizationOfTheInventoryComponent()>Инвентаризация</button>    
+                <button (click)=visualizationOfTheEmployeeComponent()>сотрудники</button>
+                <button (click)=visualizationOfAComponentOfATechnique()>техника</button>
+                <button (click)=visualizationOfTheComponentOfTheTypesOfEquipment()>типы техники</button>
+                <button (click)=visualizationOfTheComponentOfEmployeeEquipment()>техника сотрудников</button>
+                <button (click)=visualizationOfTheInventoryComponent()>инвентаризация</button>    
             </div>
             <div
                 class="div__component_visualization_field"
@@ -47,31 +47,36 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
     `,
     styles: `
         .div__system_interface_field {
-            position: relative;
-            display: inline-block;
+            display: flex;
+            width: 1000px;
+            height: 800px;
             background-color: white;
-            padding: 10px 10px 10px 10px;
+            flex-direction: column;
+            align-items: stretch;
         }
         .div__button_field {
             text-align: center;
+            margin-bottom: 45px;
         }
         .div__button_field button {
             padding: 5px 10px 5px 10px;
 
             background-color: rgba(0,0,0,0);
 
-            border-top: 1px solid grey;
-            border-bottom: 1px solid grey;
-            border-left: 1px solid grey;
-            border-right: none;
-        }
-        .div__button_field button:last-child {
-            border-right: 1px solid grey;
+            border: none;
+            font-family: "Inter", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            font-style: normal;
+            color: #25255F;
         }
         .div__component_visualization_field {
-            width: 800px;
-            height: 500px;
-            outline: 1px solid grey;
+            width: 100%;
+            max-height: inherit;
+            height: 100%;
+            background: rgb(223,160,200);
+            background: linear-gradient(45deg, rgba(223,160,200,0.4962185557816877) 0%, rgba(223,160,200,1) 50%, rgba(223,160,200,0.4962185557816877) 100%);
+            border-radius: 40px;
         }
     `,
 })
