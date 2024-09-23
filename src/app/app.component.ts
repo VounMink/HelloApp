@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
   standalone: true,
   imports: [RouterOutlet, SystemInterface, FormsModule, HttpClientModule],
   providers: [DataService],
+<<<<<<< HEAD
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -69,6 +70,230 @@ export class AppComponent implements OnInit {
   constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {}
 
   ngOnInit() {
+=======
+  template: `
+    <div class="a_huge_block">
+      <system-interface (onClick)="upCase($event)" ></system-interface>
+      <div
+        class="div__the_substrate_of_modal_windows"
+        [style]="{display:opening_the_modal_menu}"
+      >
+        <div
+          class="div__a_block_for_positioning"
+        >
+          <div
+            class="div__modal_window_for_adding_an_employee"
+            [style]="{display:opening_the_modal_menu__staff}"
+          > <!-- Модальное окно для добавления сотрудников -->
+            <div
+              class="div__the_background_of_the_full_NAME_input_field"
+            >
+              <label for="Full_NAME_input_field">ФИО сотрудника</label>
+              <input placeholder="Введите ФИО" id="Full_NAME_input_field" [(ngModel)]="data_employees_full_name"/>
+            </div>
+            <div
+              class="div__the_background_of_the_cabinet_number_input_field"
+            >
+              <label for="the_field_for_entering_the_cabinet_number">Номер кабинета сотрудника</label>
+              <input placeholder="Введите номер кабинета" id="the_field_for_entering_the_cabinet_number" [(ngModel)]="data_employees_office_number"/>
+            </div>
+            <div
+              class="div__the_background_of_the_control_buttons"
+            >
+              <button (click)="hidingTheModalWindow('staff')">Отмена</button>
+              <button (click)="sendingDataAboutTheCreationofANewEmployee();hidingTheModalWindow('staff')">Добавление</button>
+            </div>
+          </div>
+          <div
+            class="div__modal_window_for_adding_equipment"
+            [style]="{display:opening_the_modal_menu__technic}"
+          > <!-- Модальное окно для добавления техники -->
+            <div
+              class="div__the_substrate_for_entering_the_name_of_the_equipment"
+            >
+              <label for="the_field_for_entering_the_name_of_the_equipment">Введите наименование техники</label>
+              <input placeholder="Введите наименование" id="the_field_for_entering_the_name_of_the_equipment" [(ngModel)]="data_name_of_the_equipment"/>
+            </div>
+            <div
+              class="div__the_substrate_for_choosing_the_type_of_equipment"
+            >
+              <label for="list_of_types_of_equipment">Выберите тип техники</label>
+              <select id="list_of_types_of_equipment" [(ngModel)]="data_name_of_the_selected_type_of_equipment">
+                <option value="" hidden disabled selected>Тип техники</option>
+                @for ( type_of_equipment of an_array_of_technical_data; track $index ) {
+                  <option value="{{ type_of_equipment }}">{{ type_of_equipment }}</option>
+                }
+              </select>
+            </div>
+            <div
+              class="div__the_background_of_the_control_buttons"
+            >
+              <button (click)="hidingTheModalWindow('technic')">Отмена</button>
+              <button (click)="sendingDataAboutAddingEquipment();hidingTheModalWindow('technic')">Добавление</button>
+            </div>
+          </div>
+          <div
+            class="div__modal_window_for_adding_types_of_equipment"
+            [style]="{display:opening_the_modal_menu__type_of_equipment}"
+          > <!-- Модальное окно для добавления типа техники -->
+            <div
+              class="div__the_substrate_for_entering_the_name_of_the_equipment"
+            >
+              <label for="the_field_for_entering_the_name_of_the_type_of_equipment">Введите наименование типа техники</label>
+              <input placeholder="Введите наименвоание" id="the_field_for_entering_the_name_of_the_type_of_equipment" [(ngModel)]="data_the_name_of_the_introduced_type_of_equipment"/>
+            </div>
+            <div
+              class="div__the_background_of_the_control_buttons"
+            >
+              <button (click)="hidingTheModalWindow('type_of_equipment')">Отмена</button>
+              <button (click)="sendingDataAboutAddingATypeOfEquipment();hidingTheModalWindow('type_of_equipment')">Добавление</button>
+            </div>
+          </div>
+          <div
+            class="div__modal_window_for_adding_equipment_to_employees"
+            [style]="{display:opening_the_modal_menu__employee_equipment}"
+          > <!-- Модальное окно для соотношения техники с сотрудниками -->
+            <div
+              class="div__employee_selection_background"
+            >
+              <label for="employee_selection_list">Выберите сотрудника</label>
+              <select id="employee_selection_list" [(ngModel)]="Full_name_of_the_selected_employee">
+                <option value="" hidden disabled selected>ФИО сотрудника</option>
+                @for ( FCs of array_of_full_names_of_employees; track $index ) {
+                  <option value="{{FCs}}">{{ FCs }}</option>
+                }
+              </select>
+            </div>
+            <div
+              class="div__the_substrate_of_the_choice_of_technique"
+            >
+              <label for="list_of_equipment_names">Выберите технику</label>
+              <select id="list_of_equipment_names" [(ngModel)]="name_of_the_selected_equipment">
+                <option value="" hidden disabled selected>Название техники</option>
+                @for ( name of array_of_equipment_names; track $index ) {
+                  <option value="{{name}}">{{ name }}</option>
+                }
+              </select>
+            </div>
+            <div
+              class="div__the_background_of_the_control_buttons"
+            >
+              <button (click)="hidingTheModalWindow('employee_equipment')">Отмена</button>
+              <button (click)="sendingDataToAddTheRatioOfAnEmployeeToATechnique();hidingTheModalWindow('employee_equipment')">Добавление</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`,
+  styles: `
+    .a_huge_block {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: grey;
+    }
+    .div__the_substrate_of_modal_windows {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .div__a_block_for_positioning {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .div__modal_window_for_adding_an_employee {
+      width: 500px;
+      height: 500px;
+      background-color: white;
+      padding: 5px;
+      position: relative;
+    }
+    .div__the_background_of_the_full_NAME_input_field {
+      width: 100%;
+      padding-top: 20px;
+    }
+    .div__the_background_of_the_full_NAME_input_field label {
+      display: block;
+    }
+    .div__the_background_of_the_cabinet_number_input_field {
+      width: 100%;
+      padding-top: 20px;
+    }
+    .div__the_background_of_the_cabinet_number_input_field label {
+      display: block;
+    }
+    .div__the_background_of_the_control_buttons {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+    .div__the_background_of_the_control_buttons button {
+      margin-left: 10px;
+    }
+    .div__modal_window_for_adding_equipment {
+      width: 500px;
+      height: 500px;
+      background-color: white;
+      padding: 5px;
+      position: relative;
+    }
+    .div__the_substrate_for_entering_the_name_of_the_equipment {
+      width: 100%;
+      padding-top: 20px;
+    }
+    .div__the_substrate_for_entering_the_name_of_the_equipment label {
+      display: block;
+    }
+    .div__the_substrate_for_choosing_the_type_of_equipment {
+      width: 100%;
+      padding-top: 20px;
+    }
+    .div__the_substrate_for_choosing_the_type_of_equipment label {
+      display: block;
+    }
+    .div__modal_window_for_adding_types_of_equipment {
+      width: 500px;
+      height: 500px;
+      background-color: white;
+      padding: 5px;
+      position: relative;
+    }
+    .div__modal_window_for_adding_equipment_to_employees {
+      width: 500px;
+      height: 500px;
+      background-color: white;
+      padding: 5px;
+      position: relative;
+    }
+    .div__employee_selection_background {
+      width: 100%;
+      padding-top: 20px;
+    }
+    .div__employee_selection_background label {
+      display: block;
+    }
+    .div__the_substrate_of_the_choice_of_technique {
+      width: 100%;
+      padding-top: 20px;
+    }
+    .div__the_substrate_of_the_choice_of_technique label {
+      display: block;
+    }
+  `,
+})
+export class AppComponent {
+
+  constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
       this.dataService.changingEmployeeData(res.body);
     });
@@ -80,6 +305,7 @@ export class AppComponent implements OnInit {
     });
     this.http.get('http://localhost:3000/employee_equipment', {observe: 'response'}).subscribe(res => {
       this.dataService.changingEmployeeEquipmentData(res.body);
+<<<<<<< HEAD
     });
 
     this.CHTSS.dataAboutTheRemovalOfAnEmployee.subscribe((fcs: string) => {
@@ -158,6 +384,50 @@ export class AppComponent implements OnInit {
 
   obtainingDataOnAllNamesOfEquipment() {
     this.array_of_equipment_names = this.dataService.gettingInformationAboutTheEquipment();
+=======
+  });
+  }
+
+  opening_the_modal_menu: string = "none";
+  opening_the_modal_menu__staff: string = "none";
+  opening_the_modal_menu__technic: string = "none";
+  opening_the_modal_menu__type_of_equipment: string = "none";
+  opening_the_modal_menu__employee_equipment: string = "none";
+
+  data_employees_full_name: string = "";
+  data_employees_office_number: number = 0;
+
+  data_name_of_the_equipment: string = "";
+  data_name_of_the_selected_type_of_equipment: string = "";
+
+  data_the_name_of_the_introduced_type_of_equipment: string = "";
+
+  Full_name_of_the_selected_employee: string = "";
+  the_account_number_of_the_selected_employee: number = 0;
+  name_of_the_selected_equipment: string = "";
+  the_type_of_equipment_selected: string = "";
+
+  an_array_of_technical_data: Array<string> = [];
+  array_of_full_names_of_employees: Array<string> = [];
+  array_of_equipment_names: Array<string> = [];
+
+  gettingDataAboutTheTypeOfEquipment() {
+    for (const object of this.dataService.gettingInformationAboutTheEquipment()) {
+      this.an_array_of_technical_data.push(object.type);
+    }
+  }
+
+  gettingInformationAboutTheFullNameOfEmployees() {
+    for (const object of this.dataService.gettingEmployeeData()) {
+      this.array_of_full_names_of_employees.push(object.fcs);
+    }
+  }
+
+  obtainingDataOnAllNamesOfEquipment() {
+    for (const object of this.dataService.gettingInformationAboutTheEquipment()) {
+      this.array_of_equipment_names.push(object.name);
+    }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
   }
 
   upCase(modal: string) {
@@ -183,8 +453,11 @@ export class AppComponent implements OnInit {
     this.opening_the_modal_menu = "none";
     if (modal == 'staff') {
       this.opening_the_modal_menu__staff = "none";
+<<<<<<< HEAD
       this.data_employees_full_name = "";
       this.data_employees_office_number = "";
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     }
     if (modal == 'technic') {
       this.opening_the_modal_menu__technic = "none";
@@ -202,7 +475,11 @@ export class AppComponent implements OnInit {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3000/staff');
       xhr.setRequestHeader('Content-Type', 'application/json');
+<<<<<<< HEAD
       xhr.send(JSON.stringify({FCs: this.data_employees_full_name, office: Number(this.data_employees_office_number)}));
+=======
+      xhr.send(JSON.stringify({FCs: this.data_employees_full_name, office: this.data_employees_office_number}));
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     } catch (error) {
       console.log(error);
     }
@@ -210,12 +487,19 @@ export class AppComponent implements OnInit {
   }
 
   sendingDataAboutAddingEquipment() {
+<<<<<<< HEAD
     
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     try {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3000/technic');
       xhr.setRequestHeader('Content-Type', 'application/json');
+<<<<<<< HEAD
       xhr.send(JSON.stringify({name:this.data_name_of_the_equipment, type_of_equipment_id: Number(this.data_name_of_the_selected_type_of_equipment)}));
+=======
+      xhr.send(JSON.stringify({name:this.data_name_of_the_equipment, type:this.data_name_of_the_selected_type_of_equipment}));
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     } catch (error) {
       console.log(error);
     }
@@ -227,7 +511,11 @@ export class AppComponent implements OnInit {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3000/type_of_equipment');
       xhr.setRequestHeader('Content-Type', 'application/json');
+<<<<<<< HEAD
       xhr.send(JSON.stringify({type: this.data_the_name_of_the_introduced_type_of_equipment}));
+=======
+      xhr.send(JSON.stringify({name: this.data_the_name_of_the_introduced_type_of_equipment}));
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     } catch (error) {
       console.log(error);
     }
@@ -235,13 +523,33 @@ export class AppComponent implements OnInit {
   }
 
   sendingDataToAddTheRatioOfAnEmployeeToATechnique() {
+<<<<<<< HEAD
+=======
+    for (const object of this.dataService.gettingEmployeeData()) {
+      if ( object.FCs == this.Full_name_of_the_selected_employee ) {
+        this.the_account_number_of_the_selected_employee = object.office;
+      }
+    }
+    for (const object of this.dataService.gettingInformationAboutTheEquipment()) {
+      if ( object.name == this.name_of_the_selected_equipment ) {
+        this.the_type_of_equipment_selected = object.type;
+      }
+    }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     try {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3000/employee_equipment');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({
+<<<<<<< HEAD
         employee_id: Number(this.id_of_the_selected_employee),
         id_of_the_equipment: Number(this.id_of_the_selected_equipment)
+=======
+        FCs: this.Full_name_of_the_selected_employee, 
+        office: this.the_account_number_of_the_selected_employee,
+        technic: `${this.the_type_of_equipment_selected} / ${this.name_of_the_selected_equipment}`
+
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
       }));
     } catch (error) {
       console.log(error);
@@ -249,6 +557,7 @@ export class AppComponent implements OnInit {
     this.CHTSS.updateComponentEmployeeEquipment.next('true');
   }
 
+<<<<<<< HEAD
   hidingTheModalWindowForDeletingEmployees() {
     this.showing_the_employee_removal_window = "none";
     this.opening_the_modal_menu = "none";
@@ -369,4 +678,6 @@ export class AppComponent implements OnInit {
     this.CHTSS.updateComponentEmployeeEquipment.next('true');
   }
 
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 }

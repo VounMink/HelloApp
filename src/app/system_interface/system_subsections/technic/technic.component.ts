@@ -1,17 +1,25 @@
+<<<<<<< HEAD
 import { Component, Output, EventEmitter, OnInit, NgModule, Input } from '@angular/core';
+=======
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
 import { DataService } from '../../../data/data.service';
 import { ChangingTheStateService } from '../../../change/changing-the-state.service';
+<<<<<<< HEAD
 
 import { FormsModule } from '@angular/forms';
 import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
 @Component({
     selector: 'technic',
     standalone: true,
+<<<<<<< HEAD
     imports: [HttpClientModule, FormsModule, NgOptimizedImage],
     providers: [DataService, {
         provide: IMAGE_LOADER,
@@ -19,11 +27,16 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
             return `http://localhost:3000/icons?icon_name=${config.src}`
         }
     }],
+=======
+    imports: [HttpClientModule],
+    providers: [DataService],
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     template: `
         <div
             class="div__component_field"
         >
             <div
+<<<<<<< HEAD
                 class="div__the_field_of_the_add_and_search_buttons"
             >
                 <button (click)="onClick.emit('technic')">Добавить технику</button>
@@ -99,6 +112,18 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                 </div>
             </div>
             <!-- <table>
+=======
+                class="div__the_background_of_the_add_button"
+            >
+                <button (click)="onClick.emit('technic')">Добавить технику</button>
+            </div>
+            <div
+                class="div__the_background_of_the_search_field"
+            >
+                <input type="search" placeholder="Поиск"/>
+            </div>
+            <table>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                 <thead>
                     <tr>
                         <th class="column_1">Инв №</th>
@@ -109,12 +134,17 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                     </tr>
                 </thead>
                 <tbody>
+<<<<<<< HEAD
                     @for ( technic of a_visible_list_of_the_satellite_component; track technic.id ) {
+=======
+                    @for ( technic of technicalData; track technic.id ) {
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                         <tr>
                             <th>{{ technic.id }}</th>
                             <th>{{ technic.name }}</th>
                             <th>{{ technic.type }}</th>
                             <th>
+<<<<<<< HEAD
                                 <button (click)="removingEquipment(technic.id)">
                                     <img ngSrc="minus.svg" width="20" height="20" alt="" />
                                 </button>
@@ -123,10 +153,17 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                             <button (click)="editingEquipmentData(technic.id)">
                                     <img ngSrc="pen.svg" width="20" height="20" alt="" />
                                 </button>
+=======
+                                <button>-</button>
+                            </th>
+                            <th>
+                                <button>R</button>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                             </th>
                         </tr>
                     }
                 </tbody>
+<<<<<<< HEAD
             </table> -->
             <div
                 class="div__the_field_of_page_switching_buttons"
@@ -153,10 +190,14 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                     </button>
                 }
             </div>
+=======
+            </table>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
         </div>
     `,
     styles: `
         .div__component_field {
+<<<<<<< HEAD
             position: relative;
             width: 100%;
             height: 100%;
@@ -496,11 +537,69 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
         // .column_5 {
         //     width: 5%;
         // }
+=======
+            width: 100%;
+            heigth: 100%;
+        }
+        .div__the_background_of_the_add_button {
+            width: 100%;
+            text-align: center;
+
+            padding: 20px 0px 0px 0px;
+        }
+        .div__the_background_of_the_add_button button {
+            padding: 5px 15px 5px 15px;
+            background-color: rgba(0,0,0,0);
+            border: none;
+            outline: 1px solid grey;
+        }
+        .div__the_background_of_the_search_field {
+            width: 100%;
+            padding: 20px 0px 0px 0px;
+            text-align: center;
+        }
+        .div__the_background_of_the_search_field input {
+            width: 70%;
+            padding: 0px 0px 0px 15px;
+        }
+        table {
+            width: 70%;
+
+            border-collapse: collapse;
+            border: 1px solid grey;
+
+            margin-top: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        tr, th {
+            border: 1px solid grey;
+        }
+        .column_1 {
+            width: 8%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_2 {
+            width: 26%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_3 {
+            width: 24%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_4 {
+            width: 5%;
+        }
+        .column_5 {
+            width: 5%;
+        }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     `
 })
 
 export class Technic implements OnInit {
 
+<<<<<<< HEAD
     @Input() updateTechnic: boolean = false;
     @Output() onClick = new EventEmitter();
 
@@ -515,12 +614,21 @@ export class Technic implements OnInit {
 
     index_of_the_current_page: number = 0;
 
+=======
+    technicalData: any = [];
+
+    a_visible_list_of_the_equipment_component: Array<Object> = [];
+
+    @Output() onClick = new EventEmitter();
+
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
         this.CHTSS.updateComponentTechnic.subscribe(() => {
             this.ngOnInit();
         });
     }
 
+<<<<<<< HEAD
     performingASearchByAGivenValue() {
         let found_people = this.a_visible_list_of_the_satellite_component.filter((obj: any) => {
             if (obj.name.includes(this.the_value_of_the_search_string)) {
@@ -589,4 +697,12 @@ export class Technic implements OnInit {
     editingEquipmentData(technology_index: number) {
         this.CHTSS.informationAboutEditingEquipment.next(technology_index);
     }
+=======
+    ngOnInit() {
+        this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+            this.technicalData = res.body;
+            this.dataService.changingTechnologyData(res.body);
+        });
+    }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 }

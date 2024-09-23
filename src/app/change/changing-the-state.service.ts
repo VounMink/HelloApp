@@ -11,6 +11,7 @@ export class ChangingTheStateService {
   public updateComponentTypeOfEquipment = new BehaviorSubject('false');
   public updateComponentEmployeeEquipment = new BehaviorSubject('false');
 
+<<<<<<< HEAD
   public dataAboutTheRemovalOfAnEmployee = new BehaviorSubject('');
   public dataOnTheRemovalOfEquipment = new BehaviorSubject('');
   public dataOnTheRemovalOfTheTypeOfEquipment = new BehaviorSubject('');
@@ -21,5 +22,7 @@ export class ChangingTheStateService {
   public informationAboutEditingTheTypeOfEquipment = new BehaviorSubject(0);
   public dataOnEditingTheEmployeeTechnicianBundle = new BehaviorSubject(0);
 
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
   constructor() { }
 }

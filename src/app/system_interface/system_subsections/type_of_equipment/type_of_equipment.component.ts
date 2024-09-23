@@ -1,17 +1,27 @@
+<<<<<<< HEAD
 import { Component, Output, EventEmitter, Input, NgModule, OnInit } from '@angular/core';
+=======
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
+<<<<<<< HEAD
 import { DataService } from '../../../data/data.service';
 import { ChangingTheStateService } from '../../../change/changing-the-state.service';
 
 import { FormsModule } from '@angular/forms';
 import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
+=======
+import { DataService } from '../../../data.service';
+import { ChangingTheStateService } from '../../../change/changing-the-state.service';
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
 @Component({
     selector: 'type-of-equipment',
     standalone: true,
+<<<<<<< HEAD
     imports: [HttpClientModule, FormsModule, NgOptimizedImage],
     providers: [DataService, {
         provide: IMAGE_LOADER,
@@ -19,11 +29,16 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
             return `http://localhost:3000/icons?icon_name=${config.src}`
         }
     }],
+=======
+    imports: [HttpClientModule],
+    providers: [DataService],
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     template: `
         <div
             class="div__component_field"
         >
             <div
+<<<<<<< HEAD
                 class="div__the_field_of_the_add_and_search_buttons"
             >
                 <button (click)="onClick.emit('type_of_equipment')">Добавить тип техники</button>
@@ -89,6 +104,18 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                 </div>
             </div>
             <!-- <table>
+=======
+                class="div__the_background_of_the_add_button"
+            >
+                <button (click)="onClick.emit('type_of_equipment')">Добавить тип техники</button>
+            </div>
+            <div
+                class="div__the_background_of_the_search_field"
+            >
+                <input type="search" placeholder="Поиск"/>
+            </div>
+            <table>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                 <thead>
                     <tr>
                         <th class="column_1">№</th>
@@ -98,6 +125,7 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                     </tr>
                 </thead>
                 <tbody>
+<<<<<<< HEAD
                     @for ( type_of_equipment of a_visible_list_of_the_satellite_component; track type_of_equipment.id ) {
                         <tr>
                             <th>{{ type_of_equipment.id }}</th>
@@ -111,10 +139,22 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                             <button (click)="editingEquipmentTypeData(type_of_equipment.id)">
                                     <img ngSrc="pen.svg" width="20" height="20" alt="" />
                                 </button>
+=======
+                    @for ( type_of_equipment of dataOnTheTypesOfEquipment; track type_of_equipment.id ) {
+                        <tr>
+                            <th>{{ type_of_equipment.id }}</th>
+                            <th>{{ type_of_equipment.name }}</th>
+                            <th>
+                                <button>-</button>
+                            </th>
+                            <th >
+                                <button>R</button>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                             </th>
                         </tr>
                     }
                 </tbody>
+<<<<<<< HEAD
             </table> -->
             <div
                 class="div__the_field_of_page_switching_buttons"
@@ -141,10 +181,14 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                     </button>
                 }
             </div>
+=======
+            </table>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
         </div>
     `,
     styles: `
         .div__component_field {
+<<<<<<< HEAD
             position: relative;
             width: 100%;
             height: 100%;
@@ -462,10 +506,64 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
         // .column_4 {
         //     width: 5%;
         // }
+=======
+            width: 100%;
+            heigth: 100%;
+        }
+        .div__the_background_of_the_add_button {
+            width: 100%;
+            text-align: center;
+
+            padding: 20px 0px 0px 0px;
+        }
+        .div__the_background_of_the_add_button button {
+            padding: 5px 15px 5px 15px;
+            background-color: rgba(0,0,0,0);
+            border: none;
+            outline: 1px solid grey;
+        }
+        .div__the_background_of_the_search_field {
+            width: 100%;
+            padding: 20px 0px 0px 0px;
+            text-align: center;
+        }
+        .div__the_background_of_the_search_field input {
+            width: 70%;
+            padding: 0px 0px 0px 15px;
+        }
+        table {
+            width: 70%;
+
+            border-collapse: collapse;
+            border: 1px solid grey;
+
+            margin-top: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        tr, th {
+            border: 1px solid grey;
+        }
+        .column_1 {
+            width: 8%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_2 {
+            width: 50%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_3 {
+            width: 5%;
+        }
+        .column_4 {
+            width: 5%;
+        }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     `
 })
 
 export class TypeOfEquipment implements OnInit {
+<<<<<<< HEAD
     
     @Input() updateTypeOfEquipment: boolean = false;
     @Output() onClick = new EventEmitter();
@@ -481,12 +579,22 @@ export class TypeOfEquipment implements OnInit {
 
     index_of_the_current_page: number = 0;
 
+=======
+
+    dataOnTheTypesOfEquipment: any = [];
+
+    a_visible_list_of_component_types_of_equipment: Array<Object> = [];
+
+    @Output() onClick = new EventEmitter();
+
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
         this.CHTSS.updateComponentTypeOfEquipment.subscribe(() => {
             this.ngOnInit();
         });
     }
 
+<<<<<<< HEAD
     performingASearchByAGivenValue() {
         let found_people = this.a_visible_list_of_the_satellite_component.filter((obj: any) => {
             if (obj.name.includes(this.the_value_of_the_search_string)) {
@@ -552,4 +660,12 @@ export class TypeOfEquipment implements OnInit {
     editingEquipmentTypeData(type_of_equipment_index: number) {
         this.CHTSS.informationAboutEditingTheTypeOfEquipment.next(type_of_equipment_index);
     }
+=======
+    ngOnInit() {
+        this.http.get('http://localhost:3000/type_of_equipment', {observe: 'response'}).subscribe(res => {
+            this.dataOnTheTypesOfEquipment = res.body;
+            this.dataService.changingDataOnTypesOfEquipment(res.body);
+        });
+    }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 }

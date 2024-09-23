@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, Output, EventEmitter, Input, NgModule, OnInit } from '@angular/core';
+=======
+import { Component, Output, EventEmitter, Input, NgModule, OnChanges, DoCheck, OnInit } from '@angular/core';
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
@@ -7,11 +11,15 @@ import { DataService } from '../../../data/data.service';
 import { ChangingTheStateService } from '../../../change/changing-the-state.service';
 
 import { FormsModule } from '@angular/forms';
+<<<<<<< HEAD
 import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
 @Component({
     selector: 'staff',
     standalone: true,
+<<<<<<< HEAD
     imports: [HttpClientModule, FormsModule, NgOptimizedImage],
     providers: [DataService, {
         provide: IMAGE_LOADER,
@@ -19,11 +27,16 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
             return `http://localhost:3000/icons?icon_name=${config.src}`
         }
     }],
+=======
+    imports: [HttpClientModule, FormsModule],
+    providers: [DataService],
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     template: `
         <div
             class="div__component_field"
         >
             <div
+<<<<<<< HEAD
                 class="div__the_field_of_the_add_and_search_buttons"
             >
                 <button (click)="onClick.emit('staff')">Добавить сотрудника</button>
@@ -129,10 +142,48 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                         }
                     </tbody>
                 </table> -->
+=======
+                class="div__the_background_of_the_add_button"
+            >
+                <button (click)="onClick.emit('staff')">Добавить сотрудника</button>
+            </div>
+            <div
+                class="div__the_background_of_the_search_field"
+            >
+                <input type="text" placeholder="Поиск" id="search" name="search" [(ngModel)]="the_value_of_the_search_string" (keyup.enter)="performingASearchByAGivenValue()"/>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="column_1">Таб №</th>
+                        <th class="column_2">ФИО</th>
+                        <th class="column_3">Кабинет</th>
+                        <th class="column_4"></th>
+                        <th class="column_5"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for ( employee of a_visible_list_of_the_satellite_component; track employee.id ) {
+                        <tr>
+                            <th>{{ employee.id }}</th>
+                            <th>{{ employee.fcs }}</th>
+                            <th>{{ employee.office }}</th>
+                            <th>
+                                <button>-</button>
+                            </th>
+                            <th>
+                                <button>R</button>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
             <div
                 class="div__the_field_of_page_switching_buttons"
             >
                 @if (the_number_of_pages_in_the_list >= 2) {
+<<<<<<< HEAD
                     <button id="button__the_table_scroll_button_to_the_left" (click)="changingTheDisplayedListPage(index_of_the_current_page - 1)">
                         <svg class="svg__vector" width="8" height="13" viewBox="0 0 13 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path id="svg__path_left" d="M11.6599 22.7702L12.7766 21.618C12.9257 21.4644 13 21.2876 13 21.0876C13 20.8882 12.9257 20.7114 12.7766 20.5578L3.9983 11.5001L12.7763 2.44281C12.9254 2.28919 12.9998 2.11241 12.9998 1.9127C12.9998 1.71292 12.9254 1.53614 12.7763 1.3826L11.6596 0.230542C11.5108 0.0766858 11.3395 0 11.1458 0C10.9523 0 10.781 0.0769279 10.6322 0.230542L0.223284 10.97C0.0744022 11.1236 -2.12374e-08 11.3004 -2.12374e-08 11.5001C-2.12374e-08 11.6998 0.0744022 11.8764 0.223284 12.0298L10.6322 22.7702C10.7811 22.9237 10.9524 23 11.1458 23C11.3395 23 11.5108 22.9237 11.6599 22.7702Z" fill="#596EBD"/>
@@ -152,12 +203,21 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
                             <path id="svg_path_right" d="M1.3401 0.229813L0.22344 1.38204C0.0743236 1.53557 0 1.71243 0 1.91238C0 2.11184 0.0743236 2.28862 0.22344 2.44216L9.0017 11.4999L0.223675 20.5572C0.0745585 20.7108 0.000234578 20.8876 0.000234578 21.0873C0.000234578 21.2871 0.0745585 21.4639 0.223675 21.6174L1.34041 22.7695C1.48921 22.9233 1.66055 23 1.85418 23C2.04766 23 2.21899 22.9231 2.3678 22.7695L12.7767 12.03C12.9256 11.8764 13 11.6996 13 11.4999C13 11.3002 12.9256 11.1236 12.7767 10.9702L2.3678 0.229813C2.21892 0.0762804 2.04758 -5.52933e-07 1.85418 -5.52933e-07C1.66055 -5.52933e-07 1.48921 0.0762804 1.3401 0.229813Z" fill="#596EBD"/>
                         </svg>
                     </button>
+=======
+
+                    <button (click)="changingTheDisplayedListPage(index_of_the_current_page - 1)">Назад</button>
+                    @for ( page_number of array_of_page_numbers; track $index ) {
+                        <button (click)="changingTheDisplayedListPage($index)">{{ page_number }}</button>
+                    }
+                    <button (click)="changingTheDisplayedListPage(index_of_the_current_page + 1)">Вперёд</button>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                 }
             </div>
         </div>
     `,
     styles: `
         .div__component_field {
+<<<<<<< HEAD
             position: relative;
             width: 100%;
             height: 100%;
@@ -511,6 +571,63 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
         // .column_5 {
         //     width: 5%;
         // }
+=======
+            width: 100%;
+            heigth: 100%;
+        }
+        .div__the_background_of_the_add_button {
+            width: 100%;
+            text-align: center;
+
+            padding: 20px 0px 0px 0px;
+        }
+        .div__the_background_of_the_add_button button {
+            padding: 5px 15px 5px 15px;
+            background-color: rgba(0,0,0,0);
+            border: none;
+            outline: 1px solid grey;
+        }
+        .div__the_background_of_the_search_field {
+            width: 100%;
+            padding: 20px 0px 0px 0px;
+            text-align: center;
+        }
+        .div__the_background_of_the_search_field input {
+            width: 70%;
+            padding: 0px 0px 0px 15px;
+        }
+        table {
+            width: 70%;
+
+            border-collapse: collapse;
+            border: 1px solid grey;
+
+            margin-top: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        tr, th {
+            border: 1px solid grey;
+        }
+        .column_1 {
+            width: 9%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_2 {
+            width: 40%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_3 {
+            width: 10%;
+            padding: 5px 5px 5px 5px;
+        }
+        .column_4 {
+            width: 5%;
+        }
+        .column_5 {
+            width: 5%;
+        }
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     `
 })
 
@@ -530,6 +647,11 @@ export class Staff implements OnInit {
 
     index_of_the_current_page: number = 0;
 
+<<<<<<< HEAD
+=======
+    kipi: number = 1;
+
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService){
         this.CHTSS.updateComponentStaff.subscribe(() => {
             this.ngOnInit();
@@ -572,11 +694,16 @@ export class Staff implements OnInit {
 
     changingTheDisplayedListPage(page_number: number) {
         if (page_number != -1 && page_number >= 0 ) {
+<<<<<<< HEAD
+=======
+            console.log(page_number);
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
             this.index_of_the_current_page = page_number
             this.a_visible_list_of_the_satellite_component = this.a_list_divided_into_parts[page_number];
         }
     }
 
+<<<<<<< HEAD
     deletingAnEmployee(employee_index: number) {
         try {
             let xhr = new XMLHttpRequest();
@@ -599,6 +726,8 @@ export class Staff implements OnInit {
         this.CHTSS.employeeEditingData.next(employee_index);
     }
 
+=======
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
     ngOnInit() {
         this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
             this.dataService.changingEmployeeData(res.body);

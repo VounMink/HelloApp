@@ -16,11 +16,16 @@ import { HttpClient } from '@angular/common/http';
             <div
                 class="div__the_background_of_the_selection_list"
             >
+<<<<<<< HEAD
                 <select id="select" [(ngModel)]="selected_cabinet">
                     <option value="" selected disabled>Список кабинетов</option>
                     @for ( office of list_of_offices; track $index ) {
                         <option value="{{ office }}"> {{ office }}</option>
                     }
+=======
+                <select>
+                    <option value="" hidden disabled selected>Список кабинетов</option>
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
                 </select>
             </div>
             <div
@@ -33,6 +38,7 @@ import { HttpClient } from '@angular/common/http';
     styles: `
         .div__component_field {
             width: 100%;
+<<<<<<< HEAD
             height: 100%;
         }
         .div__the_background_of_the_selection_list {
@@ -71,10 +77,29 @@ import { HttpClient } from '@angular/common/http';
             font-weight: 400;
             font-style: normal;
             color: #FFFFFF;
+=======
+            heigth: 100%;
+        }
+        .div__the_background_of_the_selection_list {
+            width: 100%;
+            padding: 20px 0px 0px 0px;
+            text-align: center;
+        }
+        .div__the_background_of_the_report_generation_button {
+            width: 100%;
+            padding: 20px 0px 0px 0px;
+            text-align: center;
+        }
+        .div__the_background_of_the_report_generation_button button {
+            padding: 5px 15px 5px 15px;
+            background-color: rgba(0,0,0,0);
+            border: 1px solid grey;
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
         }
     `
 })
 
+<<<<<<< HEAD
 export class Inventory implements OnInit {
 
     list_of_offices: Array<number> = [];
@@ -93,6 +118,13 @@ export class Inventory implements OnInit {
     goToTheReportGenerationPage() {
 
         window.open('http://localhost:3000/inventory?cabinet_number=203', '_blank');
+=======
+export class Inventory {
+
+    goToTheReportGenerationPage() {
+
+        window.open('', "_blank");
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
 
     }
 

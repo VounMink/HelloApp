@@ -47,6 +47,7 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
     `,
     styles: `
         .div__system_interface_field {
+<<<<<<< HEAD
             display: flex;
             width: 1000px;
             height: 800px;
@@ -57,12 +58,22 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
         .div__button_field {
             text-align: center;
             margin-bottom: 45px;
+=======
+            position: relative;
+            display: inline-block;
+            background-color: white;
+            padding: 10px 10px 10px 10px;
+        }
+        .div__button_field {
+            text-align: center;
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
         }
         .div__button_field button {
             padding: 5px 10px 5px 10px;
 
             background-color: rgba(0,0,0,0);
 
+<<<<<<< HEAD
             border: none;
             font-family: "Inter", sans-serif;
             font-size: 14px;
@@ -77,6 +88,20 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
             background: rgb(223,160,200);
             background: linear-gradient(45deg, rgba(223,160,200,0.4962185557816877) 0%, rgba(223,160,200,1) 50%, rgba(223,160,200,0.4962185557816877) 100%);
             border-radius: 40px;
+=======
+            border-top: 1px solid grey;
+            border-bottom: 1px solid grey;
+            border-left: 1px solid grey;
+            border-right: none;
+        }
+        .div__button_field button:last-child {
+            border-right: 1px solid grey;
+        }
+        .div__component_visualization_field {
+            width: 800px;
+            height: 500px;
+            outline: 1px solid grey;
+>>>>>>> 1d4cdc3fe98120f9d213d753182eacf7080d9fa5
         }
     `,
 })
