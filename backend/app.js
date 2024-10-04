@@ -52,8 +52,8 @@ app.put('/staff', jsonParser, async (req, res) => {
 app.delete('/staff', jsonParser, async (req, res) => {
     const { id } = req.body;
     try {
+        console.log(id);
         const result = await pool.query(`DELETE FROM staff WHERE id = ${id};`);
-        console.log(result.rows);
         res.status(200).send(result.rows);
     } catch (err) {
         res.status(500).json({ error: err.message });

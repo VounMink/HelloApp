@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
   imports: [RouterOutlet, SystemInterface, FormsModule, HttpClientModule],
   providers: [DataService],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css', './app_style_dop.component.css'],
 })
 export class AppComponent implements OnInit {
 
@@ -69,18 +69,10 @@ export class AppComponent implements OnInit {
   constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingEmployeeData(res.body);
-    });
-    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingTechnologyData(res.body);
-    });
-    this.http.get('http://localhost:3000/type_of_equipment', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingDataOnTypesOfEquipment(res.body);
-    });
-    this.http.get('http://localhost:3000/employee_equipment', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingEmployeeEquipmentData(res.body);
-    });
+    this.getEmployeeData();
+    this.getTheseTechniques();
+    this.getDataOnTypesOfEquipment();
+    this.getDataBundles();
 
     this.CHTSS.dataAboutTheRemovalOfAnEmployee.subscribe((fcs: string) => {
       if (fcs != '') {
@@ -148,14 +140,37 @@ export class AppComponent implements OnInit {
     });
   }
 
+  getEmployeeData() {
+    this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
+      this.dataService.changingEmployeeData(res.body);
+      this.gettingInformationAboutTheFullNameOfEmployees();
+    });
+  }
+  getTheseTechniques() {
+    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+      this.dataService.changingTechnologyData(res.body);
+      this.obtainingDataOnAllNamesOfEquipment();
+    });
+  }
+  getDataOnTypesOfEquipment() {
+    this.http.get('http://localhost:3000/type_of_equipment', {observe: 'response'}).subscribe(res => {
+      this.dataService.changingDataOnTypesOfEquipment(res.body);
+      this.gettingDataAboutTheTypeOfEquipment();
+    });
+  }
+  getDataBundles() {
+    this.http.get('http://localhost:3000/employee_equipment', {observe: 'response'}).subscribe(res => {
+      this.dataService.changingEmployeeEquipmentData(res.body);
+    });
+  }
+
   gettingDataAboutTheTypeOfEquipment() {
     this.an_array_of_technical_data = this.dataService.obtainingDataOnTheTypesOfEquipment();
   }
-
   gettingInformationAboutTheFullNameOfEmployees() {
     this.array_of_full_names_of_employees = this.dataService.gettingEmployeeData();
-  }
 
+  }
   obtainingDataOnAllNamesOfEquipment() {
     this.array_of_equipment_names = this.dataService.gettingInformationAboutTheEquipment();
   }
@@ -166,15 +181,16 @@ export class AppComponent implements OnInit {
       this.opening_the_modal_menu__staff = "block";
     }
     if (modal == 'technic') {
-      this.gettingDataAboutTheTypeOfEquipment();
+      this.getDataOnTypesOfEquipment();
       this.opening_the_modal_menu__technic = "block";
+      console.log(this.an_array_of_technical_data);
     }
     if (modal == 'type_of_equipment') {
       this.opening_the_modal_menu__type_of_equipment = "block";
     }
     if (modal == 'employee_equipment') {
-      this.gettingInformationAboutTheFullNameOfEmployees();
-      this.obtainingDataOnAllNamesOfEquipment();
+      this.getEmployeeData();
+      this.getTheseTechniques();
       this.opening_the_modal_menu__employee_equipment = "block";
     }
   }
@@ -207,6 +223,8 @@ export class AppComponent implements OnInit {
       console.log(error);
     }
     this.CHTSS.updateComponentStaff.next('true');
+    this.data_employees_full_name = "";
+    this.data_employees_office_number = "";
   }
 
   sendingDataAboutAddingEquipment() {
@@ -220,6 +238,8 @@ export class AppComponent implements OnInit {
       console.log(error);
     }
     this.CHTSS.updateComponentTechnic.next('true');
+    this.data_name_of_the_equipment = "";
+    this.data_name_of_the_selected_type_of_equipment = "";
   }
 
   sendingDataAboutAddingATypeOfEquipment() {
@@ -232,6 +252,7 @@ export class AppComponent implements OnInit {
       console.log(error);
     }
     this.CHTSS.updateComponentTypeOfEquipment.next('true');
+    this.data_the_name_of_the_introduced_type_of_equipment = "";
   }
 
   sendingDataToAddTheRatioOfAnEmployeeToATechnique() {
@@ -247,6 +268,8 @@ export class AppComponent implements OnInit {
       console.log(error);
     }
     this.CHTSS.updateComponentEmployeeEquipment.next('true');
+    this.id_of_the_selected_employee = "";
+    this.id_of_the_selected_equipment = "";
   }
 
   hidingTheModalWindowForDeletingEmployees() {
