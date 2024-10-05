@@ -40,10 +40,10 @@ export class Staff implements OnInit, DoCheck {
 
     array__page_numbering: any = [];
 
-    constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService){
+    constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
         this.CHTSS.updateComponentStaff.subscribe(() => {
             if (this.number__skipping_requests != 0) {
-                this.ngDoCheck();
+                this.ngOnInit();
             }
             this.number__skipping_requests = this.number__skipping_requests + 1;
         });
@@ -109,7 +109,7 @@ export class Staff implements OnInit, DoCheck {
                         ].fcs
                     );
                 }
-                this.getDataFromTheServer();
+                this.ngOnInit();
             };
         } catch (error) {
             console.log(error);
@@ -120,24 +120,21 @@ export class Staff implements OnInit, DoCheck {
         this.CHTSS.employeeEditingData.next(employee_index);
     }
 
-    getDataFromTheServer() {
-        this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
-            this.dataService.changingEmployeeData(res.body);
-            this.array__employee_facilities = res.body;
-            this.array__structured_data_for_a_table = this.createStructuringTheListOfEmployees(this.array__employee_facilities, 14);
-            if ( this.array__structured_data_for_a_table.length != 0 ) {
-                this.array__employee_facilities = this.array__structured_data_for_a_table[this.number__current_page];
-            }
-            this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
-            this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
-        });
+    getFillingTheTable() {
+        this.array__structured_data_for_a_table = this.createStructuringTheListOfEmployees(this.array__employee_facilities, 14);
+        if ( this.array__structured_data_for_a_table.length != 0 ) {
+            this.array__employee_facilities = this.array__structured_data_for_a_table[this.number__current_page];
+        }
+        this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
+        this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
     }
 
     ngOnInit() {
-        this.getDataFromTheServer();
+        this.getFillingTheTable();
     }
 
     ngDoCheck() {
-        this.getDataFromTheServer();
+        this.array__employee_facilities = this.dataService.gettingEmployeeData();
+        console.log(this.dataService.gettingEmployeeData());
     }
 }

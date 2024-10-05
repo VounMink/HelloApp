@@ -115,16 +115,13 @@ export class TypeOfEquipment implements OnInit, DoCheck {
     }
 
     getDataFromTheServer() {
-        this.http.get('http://localhost:3000/type_of_equipment', {observe: 'response'}).subscribe(res => {
-            this.dataService.changingEmployeeData(res.body);
-            this.array__objects_of_types_of_equipment = res.body;
-            this.array__structured_data_for_a_table = this.createaStructuredListOfTypesOfEquipment(this.array__objects_of_types_of_equipment, 14);
-            if ( this.array__structured_data_for_a_table.length != 0 ) {
-                this.array__objects_of_types_of_equipment = this.array__structured_data_for_a_table[this.number__current_page];
-            }
-            this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
-            this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
-        });
+        this.array__objects_of_types_of_equipment = this.dataService.changingEmployeeData();
+        this.array__structured_data_for_a_table = this.createaStructuredListOfTypesOfEquipment(this.array__objects_of_types_of_equipment, 14);
+        if ( this.array__structured_data_for_a_table.length != 0 ) {
+            this.array__objects_of_types_of_equipment = this.array__structured_data_for_a_table[this.number__current_page];
+        }
+        this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
+        this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
     }
 
     ngOnInit() {

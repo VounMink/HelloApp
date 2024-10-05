@@ -69,10 +69,10 @@ export class AppComponent implements OnInit {
   constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {}
 
   ngOnInit() {
-    this.getEmployeeData();
-    this.getTheseTechniques();
-    this.getDataOnTypesOfEquipment();
-    this.getDataBundles();
+    this.dataService.changingEmployeeData();
+    this.dataService.changingTechnologyData();
+    this.dataService.changingDataOnTypesOfEquipment();
+    this.dataService.changingEmployeeEquipmentData();
 
     this.CHTSS.dataAboutTheRemovalOfAnEmployee.subscribe((fcs: string) => {
       if (fcs != '') {
@@ -140,30 +140,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getEmployeeData() {
-    this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingEmployeeData(res.body);
-      this.gettingInformationAboutTheFullNameOfEmployees();
-    });
-  }
-  getTheseTechniques() {
-    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingTechnologyData(res.body);
-      this.obtainingDataOnAllNamesOfEquipment();
-    });
-  }
-  getDataOnTypesOfEquipment() {
-    this.http.get('http://localhost:3000/type_of_equipment', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingDataOnTypesOfEquipment(res.body);
-      this.gettingDataAboutTheTypeOfEquipment();
-    });
-  }
-  getDataBundles() {
-    this.http.get('http://localhost:3000/employee_equipment', {observe: 'response'}).subscribe(res => {
-      this.dataService.changingEmployeeEquipmentData(res.body);
-    });
-  }
-
   gettingDataAboutTheTypeOfEquipment() {
     this.an_array_of_technical_data = this.dataService.obtainingDataOnTheTypesOfEquipment();
   }
@@ -181,20 +157,15 @@ export class AppComponent implements OnInit {
       this.opening_the_modal_menu__staff = "block";
     }
     if (modal == 'technic') {
-      this.getDataOnTypesOfEquipment();
       this.opening_the_modal_menu__technic = "block";
-      console.log(this.an_array_of_technical_data);
     }
     if (modal == 'type_of_equipment') {
       this.opening_the_modal_menu__type_of_equipment = "block";
     }
     if (modal == 'employee_equipment') {
-      this.getEmployeeData();
-      this.getTheseTechniques();
       this.opening_the_modal_menu__employee_equipment = "block";
     }
   }
-
   hidingTheModalWindow(modal: string) {
     this.opening_the_modal_menu = "none";
     if (modal == 'staff') {
@@ -219,6 +190,7 @@ export class AppComponent implements OnInit {
       xhr.open('POST', 'http://localhost:3000/staff');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({FCs: this.data_employees_full_name, office: Number(this.data_employees_office_number)}));
+      this.dataService.changingEmployeeData();
     } catch (error) {
       console.log(error);
     }
@@ -228,12 +200,12 @@ export class AppComponent implements OnInit {
   }
 
   sendingDataAboutAddingEquipment() {
-    
     try {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3000/technic');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({name:this.data_name_of_the_equipment, type_of_equipment_id: Number(this.data_name_of_the_selected_type_of_equipment)}));
+      this.dataService.changingTechnologyData();
     } catch (error) {
       console.log(error);
     }
@@ -248,6 +220,7 @@ export class AppComponent implements OnInit {
       xhr.open('POST', 'http://localhost:3000/type_of_equipment');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({type: this.data_the_name_of_the_introduced_type_of_equipment}));
+      this.dataService.changingDataOnTypesOfEquipment();
     } catch (error) {
       console.log(error);
     }
@@ -264,6 +237,7 @@ export class AppComponent implements OnInit {
         employee_id: Number(this.id_of_the_selected_employee),
         id_of_the_equipment: Number(this.id_of_the_selected_equipment)
       }));
+      this.dataService.changingEmployeeEquipmentData();
     } catch (error) {
       console.log(error);
     }

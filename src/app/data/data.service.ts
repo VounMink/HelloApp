@@ -14,7 +14,7 @@ export class DataService {
   private employee_equipment: any = [];
 
   gettingEmployeeData() {
-      return this.staff;        
+      return this.staff;
   }
   gettingInformationAboutTheEquipment() {
     return this.technic;
@@ -26,16 +26,24 @@ export class DataService {
       return this.employee_equipment;
   }
 
-  changingEmployeeData(data: any) {
-      this.staff = data;
+  changingEmployeeData() {
+    this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
+        this.staff = res.body;
+    });
   }
-  changingTechnologyData(data: any) {
-      this.technic = data;
+  changingTechnologyData() {
+    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+        this.technic = res.body;
+    });
   }
-  changingDataOnTypesOfEquipment(data: any) {
-      this.type_of_equipment = data;
+  changingDataOnTypesOfEquipment() {
+    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+        this.type_of_equipment = res.body;
+    });
   }
-  changingEmployeeEquipmentData(data: any) {
-      this.employee_equipment = data;
+  changingEmployeeEquipmentData() {
+    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+        this.employee_equipment = res.body;
+    });
   }
 }

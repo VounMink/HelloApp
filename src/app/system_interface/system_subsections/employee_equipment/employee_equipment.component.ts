@@ -113,16 +113,13 @@ export class EmployeeEquipment implements OnInit, DoCheck {
     }
 
     getDataFromTheServer() {
-        this.http.get('http://localhost:3000/employee_equipment', {observe: 'response'}).subscribe(res => {
-            this.dataService.changingEmployeeEquipmentData(res.body);
-            this.array__bundle_objects = res.body;
-            this.array__structured_data_for_a_table = this.createStructuringTheListOfEmployees(this.array__bundle_objects, 14);
-            if ( this.array__structured_data_for_a_table.length != 0 ) {
-                this.array__bundle_objects = this.array__structured_data_for_a_table[this.number__current_page];
-            }
-            this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
-            this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
-        });
+        this.array__bundle_objects = this.dataService.changingEmployeeEquipmentData();
+        this.array__structured_data_for_a_table = this.createStructuringTheListOfEmployees(this.array__bundle_objects, 14);
+        if ( this.array__structured_data_for_a_table.length != 0 ) {
+            this.array__bundle_objects = this.array__structured_data_for_a_table[this.number__current_page];
+        }
+        this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
+        this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
     }
 
     ngOnInit() {

@@ -115,16 +115,13 @@ export class Technic implements OnInit, DoCheck {
     }
 
     getDataFromTheServer() {
-        this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-            this.dataService.changingTechnologyData(res.body);
-            this.array__equipment_facilities = res.body;
-            this.array__structured_data_for_a_table = this.createAStructuredListOfTechniques(this.array__equipment_facilities, 14);
-            if ( this.array__structured_data_for_a_table.length != 0 ) {
-                this.array__equipment_facilities = this.array__structured_data_for_a_table[this.number__current_page];
-            }
-            this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
-            this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
-        });
+        this.array__equipment_facilities = this.dataService.gettingEmployeeData();
+        this.array__structured_data_for_a_table = this.createAStructuredListOfTechniques(this.array__equipment_facilities, 14);
+        if ( this.array__structured_data_for_a_table.length != 0 ) {
+            this.array__equipment_facilities = this.array__structured_data_for_a_table[this.number__current_page];
+        }
+        this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
+        this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
     }
 
     ngOnInit() {
