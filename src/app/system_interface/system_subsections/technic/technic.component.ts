@@ -23,7 +23,7 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
     styleUrls: ['./technic.component.css', './technic_style_dop.component.css']
 })
 
-export class Technic implements OnInit, DoCheck {
+export class Technic implements OnInit {
 
     @Input() updateTechnic: boolean = false;
     @Output() onClick = new EventEmitter();
@@ -40,9 +40,10 @@ export class Technic implements OnInit, DoCheck {
     array__page_numbering: any = [];
 
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
+        console.log(this.dataService.gettingEmployeeData());
         this.CHTSS.updateComponentTechnic.subscribe(() => {
             if (this.number__skipping_requests != 0) {
-                this.ngDoCheck();
+                this.ngOnInit();
             }
             this.number__skipping_requests = this.number__skipping_requests + 1;
         });
@@ -103,7 +104,6 @@ export class Technic implements OnInit, DoCheck {
                         ].name
                     );
                 }
-                this.getDataFromTheServer();
             };
         } catch (error) {
             console.log(error);
@@ -114,8 +114,7 @@ export class Technic implements OnInit, DoCheck {
         this.CHTSS.informationAboutEditingEquipment.next(technology_index);
     }
 
-    getDataFromTheServer() {
-        this.array__equipment_facilities = this.dataService.gettingEmployeeData();
+    getFillingTheTable() {
         this.array__structured_data_for_a_table = this.createAStructuredListOfTechniques(this.array__equipment_facilities, 14);
         if ( this.array__structured_data_for_a_table.length != 0 ) {
             this.array__equipment_facilities = this.array__structured_data_for_a_table[this.number__current_page];
@@ -125,10 +124,10 @@ export class Technic implements OnInit, DoCheck {
     }
 
     ngOnInit() {
-        this.getDataFromTheServer();
-    }
-
-    ngDoCheck() {
-        this.getDataFromTheServer();
+        this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
+            this.array__equipment_facilities = res.body;
+            this.getFillingTheTable();
+            this.dataService.changingTechnologyData(res.body);
+        });   
     }
 }

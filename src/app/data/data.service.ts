@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   private staff: any = [];
   private technic: any = [];
@@ -26,24 +26,17 @@ export class DataService {
       return this.employee_equipment;
   }
 
-  changingEmployeeData() {
-    this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
-        this.staff = res.body;
-    });
+  changingEmployeeData(arr: any) {
+    console.log(1);
+    this.staff = arr;
   }
-  changingTechnologyData() {
-    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-        this.technic = res.body;
-    });
+  changingTechnologyData(arr: any) {
+    this.technic = arr;
   }
-  changingDataOnTypesOfEquipment() {
-    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-        this.type_of_equipment = res.body;
-    });
+  changingDataOnTypesOfEquipment(arr: any) {
+    this.type_of_equipment = arr;
   }
-  changingEmployeeEquipmentData() {
-    this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-        this.employee_equipment = res.body;
-    });
+  changingEmployeeEquipmentData(arr: any) {
+    this.employee_equipment = arr;
   }
 }

@@ -23,7 +23,7 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
     styleUrls: ['./employee_equipment.component.css', './employee_equipment_style_dop.component.css']
 })
 
-export class EmployeeEquipment implements OnInit, DoCheck {
+export class EmployeeEquipment implements OnInit {
     
     @Input() updateEmployeeEquipment: boolean = false;
     @Output() onClick = new EventEmitter();
@@ -42,7 +42,7 @@ export class EmployeeEquipment implements OnInit, DoCheck {
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
         this.CHTSS.updateComponentEmployeeEquipment.subscribe(() => {
             if (this.number__skipping_requests != 0) {
-                this.ngDoCheck();
+                this.ngOnInit();
             }
             this.number__skipping_requests = this.number__skipping_requests + 1;
         });
@@ -101,7 +101,6 @@ export class EmployeeEquipment implements OnInit, DoCheck {
                         fcs: obj.fcs,
                     });
                 }
-                this.getDataFromTheServer();
             };
         } catch (error) {
             console.log(error);
@@ -112,8 +111,7 @@ export class EmployeeEquipment implements OnInit, DoCheck {
         this.CHTSS.dataOnEditingTheEmployeeTechnicianBundle.next(employee_technician_bundle_index);
     }
 
-    getDataFromTheServer() {
-        this.array__bundle_objects = this.dataService.changingEmployeeEquipmentData();
+    getFillingTheTable() {
         this.array__structured_data_for_a_table = this.createStructuringTheListOfEmployees(this.array__bundle_objects, 14);
         if ( this.array__structured_data_for_a_table.length != 0 ) {
             this.array__bundle_objects = this.array__structured_data_for_a_table[this.number__current_page];
@@ -123,11 +121,10 @@ export class EmployeeEquipment implements OnInit, DoCheck {
     }
 
     ngOnInit() {
-        this.getDataFromTheServer();
+        this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
+            this.array__bundle_objects = res.body;
+            this.getFillingTheTable();
+            this.dataService.changingEmployeeEquipmentData(res.body);
+        });
     }
-
-    ngDoCheck() {
-        this.getDataFromTheServer();
-    }
-    
 }

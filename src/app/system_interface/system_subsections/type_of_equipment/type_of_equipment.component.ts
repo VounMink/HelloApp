@@ -23,7 +23,7 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
     styleUrls: ['./type_of_equipment.component.css', './type_of_equipment_style_dop.component.css']
 })
 
-export class TypeOfEquipment implements OnInit, DoCheck {
+export class TypeOfEquipment implements OnInit {
     
     @Input() updateTypeOfEquipment: boolean = false;
     @Output() onClick = new EventEmitter();
@@ -42,7 +42,7 @@ export class TypeOfEquipment implements OnInit, DoCheck {
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
         this.CHTSS.updateComponentTypeOfEquipment.subscribe(() => {
             if (this.number__skipping_requests != 0) {
-                this.ngDoCheck();
+                this.ngOnInit();
             }
             this.number__skipping_requests = this.number__skipping_requests + 1;
         });
@@ -103,7 +103,6 @@ export class TypeOfEquipment implements OnInit, DoCheck {
                         ].type
                     );
                 }
-                this.getDataFromTheServer();
             };
         } catch (error) {
             console.log(error);
@@ -114,8 +113,7 @@ export class TypeOfEquipment implements OnInit, DoCheck {
         this.CHTSS.informationAboutEditingTheTypeOfEquipment.next(type_of_equipment_index);
     }
 
-    getDataFromTheServer() {
-        this.array__objects_of_types_of_equipment = this.dataService.changingEmployeeData();
+    getFillingTheTable() {
         this.array__structured_data_for_a_table = this.createaStructuredListOfTypesOfEquipment(this.array__objects_of_types_of_equipment, 14);
         if ( this.array__structured_data_for_a_table.length != 0 ) {
             this.array__objects_of_types_of_equipment = this.array__structured_data_for_a_table[this.number__current_page];
@@ -125,11 +123,10 @@ export class TypeOfEquipment implements OnInit, DoCheck {
     }
 
     ngOnInit() {
-        this.getDataFromTheServer();
+        this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
+            this.array__objects_of_types_of_equipment = res.body;
+            this.getFillingTheTable();
+            this.dataService.changingDataOnTypesOfEquipment(res.body);
+        });
     }
-
-    ngDoCheck() {
-        this.getDataFromTheServer();
-    }
-
 }

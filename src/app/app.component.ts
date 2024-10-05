@@ -66,14 +66,10 @@ export class AppComponent implements OnInit {
 
   call_counter_of_the_employee_editing_window: number = 0;
 
-  constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {}
+  constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {
+  }
 
   ngOnInit() {
-    this.dataService.changingEmployeeData();
-    this.dataService.changingTechnologyData();
-    this.dataService.changingDataOnTypesOfEquipment();
-    this.dataService.changingEmployeeEquipmentData();
-
     this.CHTSS.dataAboutTheRemovalOfAnEmployee.subscribe((fcs: string) => {
       if (fcs != '') {
         this.employee_s_full_name = fcs;
@@ -190,7 +186,6 @@ export class AppComponent implements OnInit {
       xhr.open('POST', 'http://localhost:3000/staff');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({FCs: this.data_employees_full_name, office: Number(this.data_employees_office_number)}));
-      this.dataService.changingEmployeeData();
     } catch (error) {
       console.log(error);
     }
@@ -205,7 +200,6 @@ export class AppComponent implements OnInit {
       xhr.open('POST', 'http://localhost:3000/technic');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({name:this.data_name_of_the_equipment, type_of_equipment_id: Number(this.data_name_of_the_selected_type_of_equipment)}));
-      this.dataService.changingTechnologyData();
     } catch (error) {
       console.log(error);
     }
@@ -220,7 +214,6 @@ export class AppComponent implements OnInit {
       xhr.open('POST', 'http://localhost:3000/type_of_equipment');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify({type: this.data_the_name_of_the_introduced_type_of_equipment}));
-      this.dataService.changingDataOnTypesOfEquipment();
     } catch (error) {
       console.log(error);
     }
@@ -237,7 +230,6 @@ export class AppComponent implements OnInit {
         employee_id: Number(this.id_of_the_selected_employee),
         id_of_the_equipment: Number(this.id_of_the_selected_equipment)
       }));
-      this.dataService.changingEmployeeEquipmentData();
     } catch (error) {
       console.log(error);
     }

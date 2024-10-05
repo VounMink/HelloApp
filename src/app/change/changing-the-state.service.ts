@@ -21,5 +21,7 @@ export class ChangingTheStateService {
   public informationAboutEditingTheTypeOfEquipment = new BehaviorSubject(0);
   public dataOnEditingTheEmployeeTechnicianBundle = new BehaviorSubject(0);
 
+  public loadingTheEmployeeComponent: number = 0;
+
   constructor() { }
 }

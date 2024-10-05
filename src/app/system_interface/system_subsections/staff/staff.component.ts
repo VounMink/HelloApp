@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, NgModule, OnInit, DoCheck } from '@angular/core';
+import { Component, Output, EventEmitter, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
@@ -24,7 +24,7 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
     styleUrls: ['./staff.component.css', './staff_style_dop.component.css']
 })
 
-export class Staff implements OnInit, DoCheck {
+export class Staff implements OnInit, OnDestroy {
 
     @Input() updateStaff: boolean = false;
     @Output() onClick = new EventEmitter();
@@ -40,9 +40,12 @@ export class Staff implements OnInit, DoCheck {
 
     array__page_numbering: any = [];
 
+    updating_the_component: boolean = false;
+
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
         this.CHTSS.updateComponentStaff.subscribe(() => {
             if (this.number__skipping_requests != 0) {
+                this.updating_the_component = true;
                 this.ngOnInit();
             }
             this.number__skipping_requests = this.number__skipping_requests + 1;
@@ -130,11 +133,27 @@ export class Staff implements OnInit, DoCheck {
     }
 
     ngOnInit() {
-        this.getFillingTheTable();
+        if ( this.dataService.gettingEmployeeData().length == 0 ) {
+            this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
+                
+                this.dataService.changingEmployeeData(res.body);
+                this.array__employee_facilities = res.body;
+                this.getFillingTheTable();
+            });
+            this.CHTSS.loadingTheEmployeeComponent = 1;
+        } else if ( this.updating_the_component == true ) {
+            this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
+                this.dataService.changingEmployeeData(res.body);
+                this.array__employee_facilities = res.body;
+                this.getFillingTheTable();
+            });
+            this.updating_the_component = false;
+        } else {
+            this.array__employee_facilities = this.dataService.gettingEmployeeData();
+            this.getFillingTheTable();
+        }
     }
 
-    ngDoCheck() {
-        this.array__employee_facilities = this.dataService.gettingEmployeeData();
-        console.log(this.dataService.gettingEmployeeData());
+    ngOnDestroy(): void {
     }
 }
