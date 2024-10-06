@@ -141,8 +141,13 @@ app.get('/employee_equipment', async (req, res) => {
 app.post('/employee_equipment', jsonParser, async (req, res) => {
     const { employee_id, id_of_the_equipment } = req.body;
     try {
-        const result = await pool.query(`INSERT INTO employee_equipment (employee_id,id_of_the_equipment) VALUES (${employee_id}, ${id_of_the_equipment});SELECT employee_equipment.id, staff.fcs, staff.office, type_of_equipment.type, technic.name FROM employee_equipment, staff, technic, type_of_equipment WHERE employee_equipment.employee_id=staff.id AND employee_equipment.id_of_the_equipment=technic.id AND technic.type_of_equipment_id=type_of_equipment.id;`);
-        res.status(200).json(result[1].rows);
+        const check = await pool.query(`SELECT * FROM employee_equipment WHERE employee_id = ${employee_id} AND id_of_the_equipment = ${id_of_the_equipment}`);
+        if (check.rows.length == 0) {
+            const result = await pool.query(`INSERT INTO employee_equipment (employee_id,id_of_the_equipment) VALUES (${employee_id}, ${id_of_the_equipment});SELECT employee_equipment.id, staff.fcs, staff.office, type_of_equipment.type, technic.name FROM employee_equipment, staff, technic, type_of_equipment WHERE employee_equipment.employee_id=staff.id AND employee_equipment.id_of_the_equipment=technic.id AND technic.type_of_equipment_id=type_of_equipment.id;`);
+            res.status(200).json(result[1].rows);
+        } else {
+            res.status(200).send();
+        }
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
