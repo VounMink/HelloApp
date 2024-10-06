@@ -6,22 +6,20 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ChangingTheStateService {
 
-  public updateComponentStaff = new BehaviorSubject('false');
-  public updateComponentTechnic = new BehaviorSubject('false');
-  public updateComponentTypeOfEquipment = new BehaviorSubject('false');
-  public updateComponentEmployeeEquipment = new BehaviorSubject('false');
+  public updateComponentStaff = new BehaviorSubject([false, []]);
+  public updateComponentTechnic = new BehaviorSubject([false, []]);
+  public updateComponentTypeOfEquipment = new BehaviorSubject([false, []]);
+  public updateComponentEmployeeEquipment = new BehaviorSubject([false, []]);
 
-  public dataAboutTheRemovalOfAnEmployee = new BehaviorSubject('');
-  public dataOnTheRemovalOfEquipment = new BehaviorSubject('');
-  public dataOnTheRemovalOfTheTypeOfEquipment = new BehaviorSubject('');
-  public dataOnTheRemovalOfTheEmployeeTechnicianBundle = new BehaviorSubject({});
+  public deleteEmployee = new BehaviorSubject('');
+  public deleteEquipment = new BehaviorSubject('');
+  public deleteTypeOfEquipment = new BehaviorSubject('');
+  public deleteBundle = new BehaviorSubject({});
 
-  public employeeEditingData = new BehaviorSubject(0);
-  public informationAboutEditingEquipment = new BehaviorSubject(0);
-  public informationAboutEditingTheTypeOfEquipment = new BehaviorSubject(0);
-  public dataOnEditingTheEmployeeTechnicianBundle = new BehaviorSubject(0);
+  public editEmployee = new BehaviorSubject(NaN);
+  public editEquipment = new BehaviorSubject(0);
+  public editTypeOfEquipment = new BehaviorSubject(0);
+  public editingBundle = new BehaviorSubject(0);
 
-  public loadingTheEmployeeComponent: number = 0;
-
-  constructor() { }
+  constructor() {}
 }

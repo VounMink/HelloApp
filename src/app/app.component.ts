@@ -17,345 +17,370 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent implements OnInit {
 
-  opening_the_modal_menu: string = "none";
-  opening_the_modal_menu__staff: string = "none";
-  opening_the_modal_menu__technic: string = "none";
-  opening_the_modal_menu__type_of_equipment: string = "none";
-  opening_the_modal_menu__employee_equipment: string = "none";
+  open__modal_menu: string = "none";
+  open__modal_menu__staff: string = "none";
+  open__modal_menu__technic: string = "none";
+  open__modal_menu__type_of_equipment: string = "none";
+  open__modal_menu__employee_equipment: string = "none";
 
-  data_employees_full_name: string = "";
-  data_employees_office_number: any = "";
+  string__employees_full_name: string = "";
+  number__employees_office_number: any = "";
 
-  data_name_of_the_equipment: string = "";
-  data_name_of_the_selected_type_of_equipment: string = "";
+  string__name_equipment: string = "";
+  string__selected_type_equipment: string = "";
 
-  data_the_name_of_the_introduced_type_of_equipment: string = "";
+  string__type_equipment_introduced: string = "";
 
-  id_of_the_selected_employee: string = "";
-  the_account_number_of_the_selected_employee: number = 0;
-  id_of_the_selected_equipment: string = "";
-  the_type_of_equipment_selected: string = "";
+  string__selected_employee: string = "";
+  number__id_selected_equipment: any = "";
 
-  an_array_of_technical_data: any = [];
-  array_of_full_names_of_employees: any = [];
-  array_of_equipment_names: any = [];
+  array__types_of_equipment: any = [];
+  array__staff: any = [];
+  array__technic: any = [];
 
-  employee_s_full_name: string = "";
-  name_of_the_remote_equipment: string = "";
-  remote_type_of_equipment: string = "";
-  employee_technician_object: any = {};
+  string__FCs_employee_s: string = "";
+  string__name_remote_equipment: string = "";
+  string__remote_type_equipment: string = "";
+  object__bundle: any = {};
 
-  showing_the_employee_removal_window: string = "none";
-  showing_the_modal_window_for_removing_equipment: string = "none";
-  showing_a_modal_window_for_deleting_a_type_of_technique: string = "none";
-  showing_the_modal_window_for_removing_the_technician_employee_bundle: string = "none";
+  string__show_deletion_window__employee: string = "none";
+  string__show_deletion_window__equipment: string = "none";
+  string__show_deletion_window__type_of_technique: string = "none";
+  string__show_deletion_window__bundle: string = "none";
 
-  the_object_of_the_employee_being_edited: any = {};
-  the_object_of_the_edited_technique: any = {};
-  an_array_of_all_types_of_equipment: Array<string> = [];
-  an_object_of_the_type_of_equipment_being_edited: any = {};
-  the_object_of_editing_the_employee_technician_bundle: any = {};
-  list_of_full_names_of_all_employees: Array<string> = [];
-  list_of_names_of_all_equipment: Array<string> =  [];
-  name_of_the_employee_s_current_equipment: String = "";
+  object__edited_employee: any = {};
+  object__edited_technique: any = {};
+  array__all_types_of_equipment: Array<string> = [];
+  object__edited_type_of_equipment: any = {};
+  object__edited_bundle: any = {};
+  array__full_name_of_all_employees: Array<string> = [];
+  array__all_names_of_equipment: Array<string> =  [];
+  string__employee_s_current_equipment: String = "";
 
-  showing_the_employee_editing_window: string = "none";
-  showing_a_modal_window_for_changing_the_technique: string = "none";
-  showing_a_modal_window_for_editing_a_type_of_technique: string = "none";
-  showing_the_modal_window_for_removing_the_employee_technician_bundle: string = "none";
+  string__show_editing_window__employee: string = "none";
+  string__show_editing_window__equipment: string = "none";
+  string__show_editing_window__type_of_technique: string = "none";
+  string__show_editing_window__bundle: string = "none";
 
-  call_counter_of_the_employee_editing_window: number = 0;
-
-  constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {
-  }
+  constructor(private dataService: DataService, private CHTSS: ChangingTheStateService, private http: HttpClient) {}
 
   ngOnInit() {
-    this.CHTSS.dataAboutTheRemovalOfAnEmployee.subscribe((fcs: string) => {
+    this.getTypesOfEquipment();
+    this.getStaff();
+    this.getTechnic();
+    
+    this.CHTSS.deleteEmployee.subscribe((fcs: string) => {
       if (fcs != '') {
-        this.employee_s_full_name = fcs;
-        this.showing_the_employee_removal_window = "block";
-        this.opening_the_modal_menu = "block";
+        this.string__FCs_employee_s = fcs;
+        this.string__show_deletion_window__employee = "block";
+        this.open__modal_menu = "block";
       }
     });
-    this.CHTSS.dataOnTheRemovalOfEquipment.subscribe((name: string) => {
+    this.CHTSS.deleteEquipment.subscribe((name: string) => {
       if (name != '') {
-        this.name_of_the_remote_equipment = name;
-        this.showing_the_modal_window_for_removing_equipment = "block";
-        this.opening_the_modal_menu = "block";
+        this.string__name_remote_equipment = name;
+        this.string__show_deletion_window__equipment = "block";
+        this.open__modal_menu = "block";
       }
     });
-    this.CHTSS.dataOnTheRemovalOfTheTypeOfEquipment.subscribe((name: string) => {
+    this.CHTSS.deleteTypeOfEquipment.subscribe((name: string) => {
       if (name != '') {
-        this.remote_type_of_equipment = name;
-        this.showing_a_modal_window_for_deleting_a_type_of_technique = "block";
-        this.opening_the_modal_menu = "block";
+        this.string__remote_type_equipment = name;
+        this.string__show_deletion_window__type_of_technique = "block";
+        this.open__modal_menu = "block";
       }
     });
-    this.CHTSS.dataOnTheRemovalOfTheEmployeeTechnicianBundle.subscribe((obj: any) => {
+    this.CHTSS.deleteBundle.subscribe((obj: any) => {
       if (Object.keys(obj).length != 0) {
-        this.employee_technician_object = obj;
-        this.showing_the_modal_window_for_removing_the_technician_employee_bundle = "block";
-        this.opening_the_modal_menu = "block";
+        this.object__bundle = obj;
+        this.string__show_deletion_window__bundle = "block";
+        this.open__modal_menu = "block";
       }
     });
 
-    this.CHTSS.employeeEditingData.subscribe((employee_index: number) => {
-      if (this.call_counter_of_the_employee_editing_window > 0) {
-        this.searchForAnEmployeeToEdit(employee_index);
-        this.showing_the_employee_editing_window = "block";
-        this.opening_the_modal_menu = "block";
-      }
-      if (employee_index == 0) {
-        this.call_counter_of_the_employee_editing_window = this.call_counter_of_the_employee_editing_window + 1;
+    this.CHTSS.editEmployee.subscribe((index__employee: number) => {
+      if (index__employee) {
+        this.searchEditedEmployee(index__employee);
+        this.string__show_editing_window__employee = "block";
+        this.open__modal_menu = "block";
       }
     });
-    this.CHTSS.informationAboutEditingEquipment.subscribe((technic_index: number) => {
-      if (technic_index != 0) { 
-        this.searchForAnEditablePieceOfEquipment(technic_index);
-        this.selectionOfAllTypesOfEquipment();
-        this.showing_a_modal_window_for_changing_the_technique = "block";
-        this.opening_the_modal_menu = "block";
+    this.CHTSS.editEquipment.subscribe((index__equipment: number) => {
+      if (index__equipment != 0) { 
+        this.searchEditableEquipment(index__equipment);
+        this.selectionAllTypesOfEquipment();
+        this.string__show_editing_window__equipment = "block";
+        this.open__modal_menu = "block";
       }
     });
-    this.CHTSS.informationAboutEditingTheTypeOfEquipment.subscribe((type_of_equipment_index: number) => {
-      if (type_of_equipment_index != 0) {
-        this.searchForAnEditableTypeOfEquipment(type_of_equipment_index);
-        this.showing_a_modal_window_for_editing_a_type_of_technique = "block";
-        this.opening_the_modal_menu = "block";
+    this.CHTSS.editTypeOfEquipment.subscribe((index__type_of_equipment: number) => {
+      if (index__type_of_equipment != 0) {
+        this.searchEditableTypeOfEquipment(index__type_of_equipment);
+        this.string__show_editing_window__type_of_technique = "block";
+        this.open__modal_menu = "block";
       }
     });
-    this.CHTSS.dataOnEditingTheEmployeeTechnicianBundle.subscribe((employee_equipment_index: number) => {
-      if (employee_equipment_index != 0) {
-        this.searchForTheEditingObjectOfTheEmployeeTechnicianBundle(employee_equipment_index);
-        this.selectionOfFullNamesOfAllEmployees();
-        this.selectionOfAllTheNamesOfTheEquipment();
-        this.name_of_the_employee_s_current_equipment = this.dataService.gettingInformationAboutTheEquipmentOfEmployees()[employee_equipment_index].name;
-        this.showing_the_modal_window_for_removing_the_employee_technician_bundle = "block";
-        this.opening_the_modal_menu = "block";
+    this.CHTSS.editingBundle.subscribe((index__bundle: number) => {
+      if (index__bundle != 0) {
+        this.searchTheBundleObjectBeingEdited(index__bundle);
+        this.selectionFullNamesAllEmployees();
+        this.selectionAllTheNamesTheEquipment();
+        this.getServerRequests('GET', 'employee_equipment', null, (e: any) => {
+          e = Array.from(JSON.parse(e));
+          this.string__employee_s_current_equipment = e.find((item: any) => item.id == index__bundle ? true : false).name;
+        });
+        this.string__show_editing_window__bundle = "block";
+        this.open__modal_menu = "block";
       }
     });
   }
 
-  gettingDataAboutTheTypeOfEquipment() {
-    this.an_array_of_technical_data = this.dataService.obtainingDataOnTheTypesOfEquipment();
+  getServerRequests(method: string, address_edge: string, request_body: any, call: any) {
+    function getTT(callback: any) {
+      let xhr = new XMLHttpRequest();
+      xhr.open(method, `http://localhost:3000/${address_edge}`);
+      if (method == 'GET') {
+        xhr.send();
+        xhr.onload = function() {
+          if (xhr.status == 200) {
+              callback(xhr.response);
+          }
+        }
+      }
+      if (method == 'POST' || method == 'PUT') {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(request_body);
+        xhr.onload = function() {
+          if (xhr.status == 200) {
+            callback(Array.from(JSON.parse(xhr.response)));
+          }
+        }
+      } 
+    }
+    getTT((e: any) => {
+      if (method == 'GET') call(e);
+      if (method == 'POST' || method == 'PUT') call(e);
+    });
   }
-  gettingInformationAboutTheFullNameOfEmployees() {
-    this.array_of_full_names_of_employees = this.dataService.gettingEmployeeData();
 
+  getTypesOfEquipment() {
+    this.getServerRequests('GET', 'type_of_equipment', null , (e: any) => {
+      this.array__types_of_equipment = Array.from(JSON.parse(e));
+    });
   }
-  obtainingDataOnAllNamesOfEquipment() {
-    this.array_of_equipment_names = this.dataService.gettingInformationAboutTheEquipment();
+  getStaff() {
+    this.getServerRequests('GET', 'staff', null , (e: any) => {
+      this.array__staff = Array.from(JSON.parse(e));
+    });
+  }
+  getTechnic() {
+    this.getServerRequests('GET', 'technic', null , (e: any) => {
+      this.array__technic = Array.from(JSON.parse(e));
+    });
   }
 
   upCase(modal: string) {
-    this.opening_the_modal_menu = "block";
+    this.open__modal_menu = "block";
     if (modal == 'staff') {
-      this.opening_the_modal_menu__staff = "block";
+      this.open__modal_menu__staff = "block";
     }
     if (modal == 'technic') {
-      this.opening_the_modal_menu__technic = "block";
+      this.open__modal_menu__technic = "block";
     }
     if (modal == 'type_of_equipment') {
-      this.opening_the_modal_menu__type_of_equipment = "block";
+      this.open__modal_menu__type_of_equipment = "block";
     }
     if (modal == 'employee_equipment') {
-      this.opening_the_modal_menu__employee_equipment = "block";
+      this.open__modal_menu__employee_equipment = "block";
     }
   }
   hidingTheModalWindow(modal: string) {
-    this.opening_the_modal_menu = "none";
+    this.open__modal_menu = "none";
     if (modal == 'staff') {
-      this.opening_the_modal_menu__staff = "none";
-      this.data_employees_full_name = "";
-      this.data_employees_office_number = "";
+      this.open__modal_menu__staff = "none";
+      this.string__employees_full_name = "";
+      this.number__employees_office_number = "";
     }
     if (modal == 'technic') {
-      this.opening_the_modal_menu__technic = "none";
+      this.open__modal_menu__technic = "none";
     }
     if (modal == 'type_of_equipment') {
-      this.opening_the_modal_menu__type_of_equipment = "none";
+      this.open__modal_menu__type_of_equipment = "none";
     }
     if (modal == 'employee_equipment') {
-      this.opening_the_modal_menu__employee_equipment = "none";
+      this.open__modal_menu__employee_equipment = "none";
     }
   }
 
   sendingDataAboutTheCreationofANewEmployee() { 
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:3000/staff');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({FCs: this.data_employees_full_name, office: Number(this.data_employees_office_number)}));
+      this.getServerRequests('POST', 'staff', JSON.stringify({FCs:this.string__employees_full_name, office:Number(this.number__employees_office_number)}) , (e: any) => {
+        this.CHTSS.updateComponentStaff.next([true, e]);
+        this.string__employees_full_name = "";
+        this.number__employees_office_number = "";
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentStaff.next('true');
-    this.data_employees_full_name = "";
-    this.data_employees_office_number = "";
   }
-
   sendingDataAboutAddingEquipment() {
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:3000/technic');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({name:this.data_name_of_the_equipment, type_of_equipment_id: Number(this.data_name_of_the_selected_type_of_equipment)}));
+      this.getServerRequests('POST', 'technic', JSON.stringify({name:this.string__name_equipment, type_of_equipment_id:Number(this.string__selected_type_equipment)}) , (e: any) => {
+        this.CHTSS.updateComponentTechnic.next([true, e]);
+        this.string__name_equipment = "";
+        this.string__selected_type_equipment = "";
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentTechnic.next('true');
-    this.data_name_of_the_equipment = "";
-    this.data_name_of_the_selected_type_of_equipment = "";
   }
-
   sendingDataAboutAddingATypeOfEquipment() {
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:3000/type_of_equipment');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({type: this.data_the_name_of_the_introduced_type_of_equipment}));
+      this.getServerRequests('POST', 'type_of_equipment', JSON.stringify({type:this.string__type_equipment_introduced}) , (e: any) => {
+        // this.CHTSS.updateComponentTechnic.next([true, e]);
+        this.string__name_equipment = "";
+        this.string__selected_type_equipment = "";
+        this.CHTSS.updateComponentTypeOfEquipment.next([true, e]);
+        this.string__type_equipment_introduced = "";
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentTypeOfEquipment.next('true');
-    this.data_the_name_of_the_introduced_type_of_equipment = "";
   }
-
   sendingDataToAddTheRatioOfAnEmployeeToATechnique() {
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:3000/employee_equipment');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({
-        employee_id: Number(this.id_of_the_selected_employee),
-        id_of_the_equipment: Number(this.id_of_the_selected_equipment)
-      }));
+      this.getServerRequests('POST', 'employee_equipment', JSON.stringify({employee_id:Number(this.string__selected_employee),id_of_the_equipment:Number(this.number__id_selected_equipment)}) , (e: any) => {
+        this.CHTSS.updateComponentEmployeeEquipment.next([true, e]);
+        this.string__selected_employee = "";
+        this.number__id_selected_equipment = "";
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentEmployeeEquipment.next('true');
-    this.id_of_the_selected_employee = "";
-    this.id_of_the_selected_equipment = "";
   }
 
   hidingTheModalWindowForDeletingEmployees() {
-    this.showing_the_employee_removal_window = "none";
-    this.opening_the_modal_menu = "none";
+    this.string__show_deletion_window__employee = "none";
+    this.open__modal_menu = "none";
   }
   hidingTheModalWindowForDeletingEquipment() {
-    this.showing_the_modal_window_for_removing_equipment = "none";
-    this.opening_the_modal_menu = "none";
+    this.string__show_deletion_window__equipment = "none";
+    this.open__modal_menu = "none";
   }
   hidingTheModalWindowForDeletingATypeOfTechnique() {
-    this.showing_a_modal_window_for_deleting_a_type_of_technique = "none";
-    this.opening_the_modal_menu = "none";
+    this.string__show_deletion_window__type_of_technique = "none";
+    this.open__modal_menu = "none";
   }
   hidingTheModalWindowForDeletingTheTechnicianEmployeeBundle() {
-    this.showing_the_modal_window_for_removing_the_technician_employee_bundle = "none";
-    this.opening_the_modal_menu = "none";
+    this.string__show_deletion_window__bundle = "none";
+    this.open__modal_menu = "none";
   }
 
   hidingTheChangeWindow(window_name: string) {
     if (window_name == 'staff') {
-      this.showing_the_employee_editing_window = "none";
-      this.opening_the_modal_menu = "none";
+      this.string__show_editing_window__employee = "none";
+      this.open__modal_menu = "none";
     }
     if (window_name == 'technic') {
-      this.showing_a_modal_window_for_changing_the_technique = "none";
-      this.opening_the_modal_menu = "none";
+      this.string__show_editing_window__equipment = "none";
+      this.open__modal_menu = "none";
     }
     if (window_name == 'type_of_equipment') {
-      this.showing_a_modal_window_for_editing_a_type_of_technique = "none";
-      this.opening_the_modal_menu = "none";
+      this.string__show_editing_window__type_of_technique = "none";
+      this.open__modal_menu = "none";
     }
     if (window_name == 'employee_equipment') {
-      this.showing_the_modal_window_for_removing_the_employee_technician_bundle = "none";
-      this.opening_the_modal_menu = "none";
+      this.string__show_editing_window__bundle = "none";
+      this.open__modal_menu = "none";
     }
   }
 
-  searchForAnEmployeeToEdit(employee_index: number) {
-    this.the_object_of_the_employee_being_edited = this.dataService.gettingEmployeeData()[employee_index];
+  searchEditedEmployee(index__employee: number) {
+    this.getServerRequests('GET', 'staff', null , (e: any) => {
+      this.object__edited_employee = Array.from(JSON.parse(e)).find((item: any) => item.id == index__employee ? true : false);
+    });
   }
-  searchForAnEditablePieceOfEquipment(technic_index: number) {
-    this.the_object_of_the_edited_technique = this.dataService.gettingInformationAboutTheEquipment()[technic_index - 1];
+  searchEditableEquipment(index__equipment: number) {
+    this.getServerRequests('GET', 'technic', null , (e: any) => {
+      this.object__edited_technique = Array.from(JSON.parse(e)).find((item: any) => item.id == index__equipment ? true : false);
+    });
   }
-  searchForAnEditableTypeOfEquipment(type_of_equipment_index: number) {
-    this.an_object_of_the_type_of_equipment_being_edited = this.dataService.obtainingDataOnTheTypesOfEquipment()[type_of_equipment_index - 1];
+  searchEditableTypeOfEquipment(index__type_of_equipment: number) {
+    this.getServerRequests('GET', 'type_of_equipment', null , (e: any) => {
+      this.object__edited_type_of_equipment = Array.from(JSON.parse(e)).find((item: any) => item.id == index__type_of_equipment ? true : false);
+    });
   }
-  searchForTheEditingObjectOfTheEmployeeTechnicianBundle(employee_equipment_index: number) {
-    this.the_object_of_editing_the_employee_technician_bundle = this.dataService.gettingInformationAboutTheEquipmentOfEmployees()[employee_equipment_index];
+  searchTheBundleObjectBeingEdited(index__bundle: number) {
+    this.getServerRequests('GET', 'employee_equipment', null , (e: any) => {
+      this.object__edited_bundle = Array.from(JSON.parse(e)).find((item: any) => item.id == index__bundle ? true : false);
+    });
   }
 
-  selectionOfAllTypesOfEquipment() {
-    this.an_array_of_all_types_of_equipment = this.dataService.obtainingDataOnTheTypesOfEquipment().filter((obj: any) => obj.type);
+  selectionAllTypesOfEquipment() {
+    this.getServerRequests('GET', 'type_of_equipment', null , (e: any) => {
+      this.array__all_types_of_equipment = e.filter((obj: any) => obj.type);
+    });
   }
-  selectionOfFullNamesOfAllEmployees() {
-    this.list_of_full_names_of_all_employees = this.dataService.gettingEmployeeData().filter((obj: any) => obj.fcs);
+  selectionFullNamesAllEmployees() {
+    this.getServerRequests('GET', 'staff', null , (e: any) => {
+      this.array__full_name_of_all_employees = Array.from(JSON.parse(e)).map((obj: any) => obj.fcs);
+    });
   }
-  selectionOfAllTheNamesOfTheEquipment() {
-    this.list_of_names_of_all_equipment = this.dataService.gettingInformationAboutTheEquipment().filter((obj: any) => obj.name);
+  selectionAllTheNamesTheEquipment() {
+    this.getServerRequests('GET', 'technic', null , (e: any) => {
+      this.array__all_names_of_equipment = Array.from(JSON.parse(e)).map((obj: any) => obj.name);
+    });
   }
 
   sendingChangesToTheEmployeesFullName() {
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('PUT', 'http://localhost:3000/staff');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(this.the_object_of_the_employee_being_edited));
+      this.getServerRequests('PUT', 'staff', JSON.stringify(this.object__edited_employee) , (e: any) => {
+        this.CHTSS.updateComponentStaff.next([true, e]);
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentStaff.next('true');
   }
   sendingDataAboutChangesInEquipment() {
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('PUT', 'http://localhost:3000/technic');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(this.the_object_of_the_edited_technique));
+      this.getServerRequests('PUT', 'technic', JSON.stringify(this.object__edited_technique) , (e: any) => {
+        this.CHTSS.updateComponentTechnic.next([true, e]);
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentTechnic.next('true');
   }
   sendingAModifiedTypeOfEquipment() {
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('PUT', 'http://localhost:3000/type_of_equipment');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(this.an_object_of_the_type_of_equipment_being_edited));
+      this.getServerRequests('PUT', 'type_of_equipment', JSON.stringify(this.object__edited_type_of_equipment) , (e: any) => {
+        this.CHTSS.updateComponentTypeOfEquipment.next([true, e]);
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentTypeOfEquipment.next('true');
   }
   sendingAnEditedEmployeeTechnicianBundle() {
-    let an_object_with_an_office = this.dataService.gettingEmployeeData().find((item: any) => {
-      if (item.fcs == this.the_object_of_editing_the_employee_technician_bundle.fcs) {
-        return item;
-      }
-    }).office;
-    let theTypeOfEquipmentSelected: string = this.dataService.gettingInformationAboutTheEquipment().find((item: any) => {
-      if (item.name == this.the_object_of_editing_the_employee_technician_bundle.technic) {
-        return item;
-      }
-    }).type;
-    this.the_object_of_editing_the_employee_technician_bundle = {
-      id: this.the_object_of_editing_the_employee_technician_bundle.id,
-      fcs: this.the_object_of_editing_the_employee_technician_bundle.fcs,
+    let an_object_with_an_office: any = "";
+    let theTypeOfEquipmentSelected: string = "";
+    this.getServerRequests('GET', 'staff', null , (e: any) => {
+      an_object_with_an_office = e.find((item: any) => item.fcs == this.object__edited_bundle.fcs ? true : false).office;
+    });
+    this.getServerRequests('GET', 'technic', null , (e: any) => {
+      theTypeOfEquipmentSelected = e.find((item: any) => item.name == this.object__edited_bundle.technic ? true : false).type;
+    });
+    this.object__edited_bundle = {
+      id: this.object__edited_bundle.id,
+      fcs: this.object__edited_bundle.fcs,
       office: an_object_with_an_office,
-      technic: theTypeOfEquipmentSelected + " / " + this.the_object_of_editing_the_employee_technician_bundle.technic
+      technic: theTypeOfEquipmentSelected + " / " + this.object__edited_bundle.technic
     };
     try {
-      let xhr = new XMLHttpRequest();
-      xhr.open('PUT', 'http://localhost:3000/employee_equipment');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(this.the_object_of_editing_the_employee_technician_bundle));
+      this.getServerRequests('PUT', 'employee_equipment', JSON.stringify(this.object__edited_bundle) , (e: any) => {
+        this.CHTSS.updateComponentEmployeeEquipment.next([true, e]);
+      });
     } catch (error) {
       console.log(error);
     }
-    this.CHTSS.updateComponentEmployeeEquipment.next('true');
   }
 
 }

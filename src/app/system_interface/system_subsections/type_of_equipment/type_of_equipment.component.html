@@ -32,7 +32,7 @@
                 <div
                     class="div__the_body_of_the_table"
                 >
-                @for ( type_of_equipment of array__objects_of_types_of_equipment; track $index ) {
+                @for ( type_of_equipment of array__types_of_equipment; track $index ) {
                         <div
                             class="div__table_row"
                         >
@@ -58,7 +58,7 @@
                             <div
                                 class="div__column_with_an_edit_button"
                             >
-                                <button (click)="editingEquipmentTypeData($index)">
+                                <button (click)="editingEquipmentTypeData(type_of_equipment.id)">
                                     <img ngSrc="pen.svg" width="20" height="20" alt="" />
                                 </button>
                             </div>

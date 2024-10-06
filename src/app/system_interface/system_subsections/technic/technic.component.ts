@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, NgModule, Input, DoCheck } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, NgModule, Input, AfterContentChecked } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
@@ -23,13 +23,14 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
     styleUrls: ['./technic.component.css', './technic_style_dop.component.css']
 })
 
-export class Technic implements OnInit {
+export class Technic implements OnInit, AfterContentChecked {
 
     @Input() updateTechnic: boolean = false;
     @Output() onClick = new EventEmitter();
 
     array__equipment_facilities: any = [];
     array__structured_data_for_a_table: any = [];
+    array__technic: any = [];
 
     number__the_sum_of_the_list_pages: number = 0;
     number__current_page: number = 0;
@@ -38,30 +39,62 @@ export class Technic implements OnInit {
     string__search_text: any;
 
     array__page_numbering: any = [];
+    array__data_from_the_server: any = [];
+
+    updating_the_component: boolean = false;
 
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
-        console.log(this.dataService.gettingEmployeeData());
-        this.CHTSS.updateComponentTechnic.subscribe(() => {
-            if (this.number__skipping_requests != 0) {
-                this.ngOnInit();
+        this.CHTSS.updateComponentTechnic.subscribe((arr: any) => {
+            if (arr[0]) {
+                if (arr[1].length == 0) {
+                    this.updating_the_component = true;
+                    this.CHTSS.updateComponentTechnic.next([false, []]); 
+                } else {
+                    this.array__equipment_facilities = arr[1];
+                    this.getFillingTheTable();
+                }
             }
-            this.number__skipping_requests = this.number__skipping_requests + 1;
+        });
+    }
+
+    getServerRequests(method: string, address_edge: string, request_body: any, call: any) {
+        function getTT(callback: any) {
+          let xhr = new XMLHttpRequest();
+          xhr.open(method, `http://localhost:3000/${address_edge}`);
+          if (method == 'GET') {
+            xhr.send();
+            xhr.onload = function() {
+              if (xhr.status == 200) {
+                  callback(xhr.response);
+              }
+            }
+          }
+          if (method == 'POST' || method == 'PUT' || method == 'DELETE') {
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(request_body);
+            xhr.onload = function() {
+              if (xhr.status == 200) {
+                  callback(Array.from(JSON.parse(xhr.response)));
+              }
+            }
+          } 
+        }
+        getTT((e: any) => {
+          if (method == 'GET') call(e);
+          if (method == 'POST' || method == 'PUT' || method == 'DELETE') call(e);
         });
     }
 
     performingASearchByAGivenValue() {
-        let value: number = this.string__search_text;
-        let found_people = this.array__equipment_facilities.filter((obj: any) => {
-            if (obj.fcs.includes(this.string__search_text)) {
-                return obj;
-            }
-            if (isNaN(value*1) == false) {
-                if (obj.office == (value*1)) {
-                    return obj;
-                }
-            }
-        });
-        this.array__equipment_facilities = found_people;
+        if (String(this.string__search_text) != 'undefined' && this.string__search_text.length != 0) {
+            this.array__equipment_facilities = this.array__equipment_facilities.filter((obj: any) => {
+                if (obj.name.includes(this.string__search_text) || obj.type.includes(this.string__search_text)) return obj;
+            });
+            this.getFillingTheTable();
+        } else {
+            this.array__equipment_facilities = this.array__technic;
+            this.getFillingTheTable(); 
+        }
     }
     createAStructuredListOfTechniques(array: any, chunkSize: number): any {
         if (array.length != 0) {
@@ -87,47 +120,64 @@ export class Technic implements OnInit {
     }
 
     deleteTechnic(technology_index: number) {
-        try { 
-            let xhr = new XMLHttpRequest();
-            xhr.open('DELETE', 'http://localhost:3000/technic');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                id: technology_index
-            }));
-            xhr.onload = () => {
-                if (xhr.status == 200) {
-                    this.CHTSS.dataOnTheRemovalOfEquipment.next(
-                        this.array__equipment_facilities[
-                            this.array__equipment_facilities.indexOf(
-                                this.array__equipment_facilities.filter((item: any) => item.id == technology_index)[0]
-                            )
-                        ].name
-                    );
-                }
-            };
+        try {
+            this.getServerRequests('DELETE', 'technic', JSON.stringify({id: technology_index}), (e: any) => {
+                this.CHTSS.deleteEquipment.next(
+                    this.array__equipment_facilities[
+                        this.array__equipment_facilities.indexOf(
+                            this.array__equipment_facilities.filter((item: any) => item.id == technology_index)[0]
+                        )
+                    ].name
+                );
+                this.array__equipment_facilities = e;
+                this.getFillingTheTable();
+            });
         } catch (error) {
             console.log(error);
         }
     }
 
     editingEquipmentData(technology_index: number) {
-        this.CHTSS.informationAboutEditingEquipment.next(technology_index);
+        this.CHTSS.editEquipment.next(technology_index);
     }
 
     getFillingTheTable() {
-        this.array__structured_data_for_a_table = this.createAStructuredListOfTechniques(this.array__equipment_facilities, 14);
-        if ( this.array__structured_data_for_a_table.length != 0 ) {
-            this.array__equipment_facilities = this.array__structured_data_for_a_table[this.number__current_page];
+        if (this.array__equipment_facilities.length > 0) {
+            this.array__structured_data_for_a_table = this.createAStructuredListOfTechniques(this.array__equipment_facilities, 14);
+            if ( this.array__structured_data_for_a_table.length != 0 ) {
+                this.array__equipment_facilities = this.array__structured_data_for_a_table[this.number__current_page];
+            }
+            this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
+            this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
+        } else {
+            this.number__the_sum_of_the_list_pages = 0;
         }
-        this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
-        this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
+    }
+
+    getDataFromTheServer() {
+        this.getServerRequests('GET', 'technic', null, (e: any) => {
+            this.dataService.staff.next(this.array__data_from_the_server);
+            this.array__equipment_facilities = this.array__data_from_the_server = this.array__technic = Array.from(JSON.parse(e));
+            this.getFillingTheTable();
+        });
     }
 
     ngOnInit() {
-        this.http.get('http://localhost:3000/technic', {observe: 'response'}).subscribe(res => {
-            this.array__equipment_facilities = res.body;
-            this.getFillingTheTable();
-            this.dataService.changingTechnologyData(res.body);
-        });   
+        this.dataService.technic.subscribe((res: any) => {
+            if (res.length == 0) {
+                this.getDataFromTheServer();
+            }
+            if (res.length > 0) {
+                this.array__equipment_facilities = res;
+                this.getFillingTheTable();
+            }
+        });
+    }
+
+    ngAfterContentChecked() {
+        if (this.updating_the_component) {
+            this.getDataFromTheServer();
+            this.updating_the_component = false;
+        }
     }
 }

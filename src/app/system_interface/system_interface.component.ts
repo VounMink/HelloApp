@@ -18,30 +18,39 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
             <div
                 class="div__button_field"
             >
-                <button (click)=visualizationOfTheEmployeeComponent()>сотрудники</button>
-                <button (click)=visualizationOfAComponentOfATechnique()>техника</button>
-                <button (click)=visualizationOfTheComponentOfTheTypesOfEquipment()>типы техники</button>
-                <button (click)=visualizationOfTheComponentOfEmployeeEquipment()>техника сотрудников</button>
-                <button (click)=visualizationOfTheInventoryComponent()>инвентаризация</button>    
+                <button (click)="displayComponent(0)">сотрудники</button>
+                <button (click)="displayComponent(1)">техника</button>
+                <button (click)="displayComponent(2)">типы техники</button>
+                <button (click)="displayComponent(3)">техника сотрудников</button>
+                <button (click)="displayComponent(4)">инвентаризация</button>    
             </div>
             <div
                 class="div__component_visualization_field"
             >
-                @if (VisualizeTheEmployeeComponent) {
-                    <staff (onClick)="upCase($event)"></staff>
-                }
-                @if (VisualizeAComponentOfTheTechnique) {
-                    <technic (onClick)="upCase($event)"></technic>
-                }
-                @if (VisualizeTheComponentOfTheTypesOfEquipment) {
-                    <type-of-equipment (onClick)="upCase($event)"></type-of-equipment>
-                }
-                @if (VisualizeTheComponentOfEmployeeEquipment) {
-                    <employee-equipment (onClick)="upCase($event)"></employee-equipment>
-                }
-                @if (VisualizeTheInventoryComponent) {
-                    <inventory></inventory>
-                }
+                <staff
+                    class="staff"
+                    [style]="{ display: displaying_components[0] }"
+                    (onClick)="upCase($event)"
+                ></staff>
+                <technic
+                    class="technic"
+                    [style]="{ display: displaying_components[1] }"
+                    (onClick)="upCase($event)"
+                ></technic>
+                <type-of-equipment
+                    class="type-of-equipment"
+                    [style]="{ display: displaying_components[2] }"
+                    (onClick)="upCase($event)"
+                ></type-of-equipment>
+                <employee-equipment
+                    class="employee-equipment"
+                    [style]="{ display: displaying_components[3] }"
+                    (onClick)="upCase($event)"
+                ></employee-equipment>
+                <inventory
+                    class="inventory"
+                    [style]="{ display: displaying_components[4] }"
+                ></inventory>
             </div>
         </div>
     `,
@@ -78,6 +87,21 @@ import { Inventory } from './system_subsections/inventory/inventory.component';
             background: linear-gradient(45deg, rgba(223,160,200,0.4962185557816877) 0%, rgba(223,160,200,1) 50%, rgba(223,160,200,0.4962185557816877) 100%);
             border-radius: 40px;
         }
+        .staff {
+            height: 100%;
+        }
+        .technic {
+            height: 100%;
+        }
+        .type-of-equipment {
+            height: 100%;
+        }
+        .employee-equipment {
+            height: 100%;
+        }
+        .inventory {
+            height: 100%;
+        }
     `,
 })
 
@@ -86,49 +110,14 @@ export class SystemInterface {
     @Input() updateComponentStaff: boolean = false;
     @Output() onClick = new EventEmitter()
 
-    VisualizeTheEmployeeComponent = true;
-    VisualizeAComponentOfTheTechnique = false;
-    VisualizeTheComponentOfTheTypesOfEquipment = false;
-    VisualizeTheComponentOfEmployeeEquipment = false;
-    VisualizeTheInventoryComponent = false;
+    displaying_components: Array<string> = ["block","none","none","none","none"];
 
-    visualizationOfTheEmployeeComponent() {
-        this.VisualizeTheEmployeeComponent = true;
-        this.VisualizeAComponentOfTheTechnique = false;
-        this.VisualizeTheComponentOfTheTypesOfEquipment = false;
-        this.VisualizeTheComponentOfEmployeeEquipment = false;
-        this.VisualizeTheInventoryComponent = false;
-    }
-    visualizationOfAComponentOfATechnique() {
-        this.VisualizeTheEmployeeComponent = false;
-        this.VisualizeAComponentOfTheTechnique = true;
-        this.VisualizeTheComponentOfTheTypesOfEquipment = false;
-        this.VisualizeTheComponentOfEmployeeEquipment = false;
-        this.VisualizeTheInventoryComponent = false;
-    }
-    visualizationOfTheComponentOfTheTypesOfEquipment() {
-        this.VisualizeTheEmployeeComponent = false;
-        this.VisualizeAComponentOfTheTechnique = false;
-        this.VisualizeTheComponentOfTheTypesOfEquipment = true;
-        this.VisualizeTheComponentOfEmployeeEquipment = false;
-        this.VisualizeTheInventoryComponent = false;
-    }
-    visualizationOfTheComponentOfEmployeeEquipment() {
-        this.VisualizeTheEmployeeComponent = false;
-        this.VisualizeAComponentOfTheTechnique = false;
-        this.VisualizeTheComponentOfTheTypesOfEquipment = false;
-        this.VisualizeTheComponentOfEmployeeEquipment = true;
-        this.VisualizeTheInventoryComponent = false;
-    }
-    visualizationOfTheInventoryComponent() {
-        this.VisualizeTheEmployeeComponent = false;
-        this.VisualizeAComponentOfTheTechnique = false;
-        this.VisualizeTheComponentOfTheTypesOfEquipment = false;
-        this.VisualizeTheComponentOfEmployeeEquipment = false;
-        this.VisualizeTheInventoryComponent = true;
+    displayComponent(index: number) {
+        this.displaying_components = this.displaying_components.map((item: any, ind: number, array: any) => ind == index ? "block" : "none" );
     }
 
     upCase(modal: string) {
         this.onClick.emit(modal)
     }
+
 }

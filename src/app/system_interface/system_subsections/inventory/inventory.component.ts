@@ -92,7 +92,7 @@ export class Inventory implements OnInit {
 
     goToTheReportGenerationPage() {
 
-        window.open('http://localhost:3000/inventory?cabinet_number=203', '_blank');
+        window.open(`http://localhost:3000/inventory?cabinet_number=${this.selected_cabinet}`, '_blank');
 
     }
 

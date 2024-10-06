@@ -69,7 +69,7 @@
                             <div
                                 class="div__column_with_an_edit_button"
                             >
-                                <button (click)="editingEmployeeData($index)">
+                                <button (click)="editingEmployeeData(employee.id)">
                                     <img ngSrc="pen.svg" width="20" height="20" alt="" />
                                 </button>
                             </div>
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div
-                class="div__the_field_of_page_switching_buttons"
+                class="div__the_field_of_page_switching_buttons" 
             >
                 @if (number__the_sum_of_the_list_pages >= 2) {
                     <button id="button__the_table_scroll_button_to_the_left" (click)="changingTheDisplayedListPage(number__current_page - 1)">

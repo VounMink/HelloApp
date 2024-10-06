@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, NgModule, OnInit, DoCheck } from '@angular/core';
+import { Component, Output, EventEmitter, Input, NgModule, OnInit, AfterContentChecked } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
@@ -21,15 +21,16 @@ import { NgOptimizedImage, IMAGE_LOADER, ImageLoaderConfig } from '@angular/comm
     }],
     templateUrl: './type_of_equipment.component.html',
     styleUrls: ['./type_of_equipment.component.css', './type_of_equipment_style_dop.component.css']
-})
+}) 
 
-export class TypeOfEquipment implements OnInit {
+export class TypeOfEquipment implements OnInit, AfterContentChecked {
     
     @Input() updateTypeOfEquipment: boolean = false;
     @Output() onClick = new EventEmitter();
 
-    array__objects_of_types_of_equipment: any = [];
+    array__types_of_equipment: any = [];
     array__structured_data_for_a_table: any = [];
+    array__type_of_equipment: any = [];
 
     number__the_sum_of_the_list_pages: number = 0;
     number__current_page: number = 0;
@@ -38,29 +39,62 @@ export class TypeOfEquipment implements OnInit {
     string__search_text: any;
 
     array__page_numbering: any = [];
+    array__data_from_the_server: any = [];
+
+    updating_the_component: boolean = false;
 
     constructor(private dataService: DataService, private http: HttpClient, private CHTSS: ChangingTheStateService) {
-        this.CHTSS.updateComponentTypeOfEquipment.subscribe(() => {
-            if (this.number__skipping_requests != 0) {
-                this.ngOnInit();
+        this.CHTSS.updateComponentTypeOfEquipment.subscribe((arr: any) => {
+            if (arr[0]) {
+                if (arr[1].length == 0) {
+                    this.updating_the_component = true;
+                    this.CHTSS.updateComponentTypeOfEquipment.next([false, []]); 
+                } else {
+                    this.array__types_of_equipment = arr[1];
+                    this.getFillingTheTable();
+                }
             }
-            this.number__skipping_requests = this.number__skipping_requests + 1;
+        });
+    }
+
+    getServerRequests(method: string, address_edge: string, request_body: any, call: any) {
+        function getTT(callback: any) {
+          let xhr = new XMLHttpRequest();
+          xhr.open(method, `http://localhost:3000/${address_edge}`);
+          if (method == 'GET') {
+            xhr.send();
+            xhr.onload = function() {
+              if (xhr.status == 200) {
+                  callback(xhr.response);
+              }
+            }
+          }
+          if (method == 'POST' || method == 'PUT' || method == 'DELETE') {
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(request_body);
+            xhr.onload = function() {
+              if (xhr.status == 200) {
+                  callback(Array.from(JSON.parse(xhr.response)));
+              }
+            }
+          } 
+        }
+        getTT((e: any) => {
+          if (method == 'GET') call(e);
+          if (method == 'POST' || method == 'PUT' || method == 'DELETE') call(e);
         });
     }
 
     performingASearchByAGivenValue() {
-        let value: number = this.string__search_text;
-        let found_people = this.array__objects_of_types_of_equipment.filter((obj: any) => {
-            if (obj.fcs.includes(this.string__search_text)) {
-                return obj;
-            }
-            if (isNaN(value*1) == false) {
-                if (obj.office == (value*1)) {
-                    return obj;
-                }
-            }
-        });
-        this.array__objects_of_types_of_equipment = found_people;
+        if (String(this.string__search_text) != 'undefined' && this.string__search_text.length != 0) {
+            this.array__types_of_equipment = this.array__types_of_equipment.filter((obj: any) => {
+                if (obj.type.includes(this.string__search_text)) return obj;
+            });
+            this.getFillingTheTable();
+        } else {
+            this.array__types_of_equipment = this.array__type_of_equipment;
+            this.getFillingTheTable();
+        }
     }
     createaStructuredListOfTypesOfEquipment(array: any, chunkSize: number): any {
         if (array.length != 0) {
@@ -81,52 +115,69 @@ export class TypeOfEquipment implements OnInit {
     changingTheDisplayedListPage(page_number: number) {
         if (page_number != -1 && page_number >= 0 ) {
             this.number__current_page = page_number
-            this.array__objects_of_types_of_equipment = this.array__structured_data_for_a_table[page_number];
+            this.array__types_of_equipment = this.array__structured_data_for_a_table[page_number];
         }
     }
 
     deleteTypeOfEquipment(type_of_equipment_index: number) {
         try {
-            let xhr = new XMLHttpRequest();
-            xhr.open('DELETE', 'http://localhost:3000/type_of_equipment');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                id: type_of_equipment_index
-            }));
-            xhr.onload = () => {
-                if (xhr.status == 200) {
-                    this.CHTSS.dataOnTheRemovalOfTheTypeOfEquipment.next(
-                        this.array__objects_of_types_of_equipment[
-                            this.array__objects_of_types_of_equipment.indexOf(
-                                this.array__objects_of_types_of_equipment.filter((item: any) => item.id == type_of_equipment_index)[0]
-                            )
-                        ].type
-                    );
-                }
-            };
+            this.getServerRequests('DELETE', 'type_of_equipment', JSON.stringify({id: type_of_equipment_index}), (e: any) => {
+                this.CHTSS.deleteTypeOfEquipment.next(
+                    this.array__types_of_equipment[
+                        this.array__types_of_equipment.indexOf(
+                            this.array__types_of_equipment.filter((item: any) => item.id == type_of_equipment_index)[0]
+                        )
+                    ].type
+                );
+                this.array__types_of_equipment = e;
+                this.getFillingTheTable();
+            });
         } catch (error) {
             console.log(error);
         }
     }
 
     editingEquipmentTypeData(type_of_equipment_index: number) {
-        this.CHTSS.informationAboutEditingTheTypeOfEquipment.next(type_of_equipment_index);
+        this.CHTSS.editTypeOfEquipment.next(type_of_equipment_index);
     }
 
     getFillingTheTable() {
-        this.array__structured_data_for_a_table = this.createaStructuredListOfTypesOfEquipment(this.array__objects_of_types_of_equipment, 14);
-        if ( this.array__structured_data_for_a_table.length != 0 ) {
-            this.array__objects_of_types_of_equipment = this.array__structured_data_for_a_table[this.number__current_page];
+        if (this.array__types_of_equipment.length > 0) {
+            this.array__structured_data_for_a_table = this.createaStructuredListOfTypesOfEquipment(this.array__types_of_equipment, 14);
+            if ( this.array__structured_data_for_a_table.length != 0 ) {
+                this.array__types_of_equipment = this.array__structured_data_for_a_table[this.number__current_page];
+            }
+            this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
+            this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
+        } else {
+            this.number__the_sum_of_the_list_pages = 0;
         }
-        this.number__the_sum_of_the_list_pages = this.calcTheNumberOfPagesInTheList(this.array__structured_data_for_a_table);
-        this.createAnArrayOfNumbers(this.number__the_sum_of_the_list_pages);
+    }
+
+    getDataFromTheServer() {
+        this.getServerRequests('GET', 'type_of_equipment', null, (e: any) => {
+            this.dataService.type_of_equipment.next(this.array__data_from_the_server);
+            this.array__types_of_equipment = this.array__data_from_the_server = this.array__type_of_equipment = Array.from(JSON.parse(e));
+            this.getFillingTheTable();
+        });
     }
 
     ngOnInit() {
-        this.http.get('http://localhost:3000/staff', {observe: 'response'}).subscribe(res => {
-            this.array__objects_of_types_of_equipment = res.body;
-            this.getFillingTheTable();
-            this.dataService.changingDataOnTypesOfEquipment(res.body);
+        this.dataService.type_of_equipment.subscribe((res: any) => {
+            if (res.length == 0) {
+                this.getDataFromTheServer();
+            }
+            if (res.length > 0) {
+                this.array__types_of_equipment = res;
+                this.getFillingTheTable();
+            }
         });
+    }
+
+    ngAfterContentChecked() {
+        if (this.updating_the_component) {
+            this.getDataFromTheServer();
+            this.updating_the_component = false;
+        }
     }
 }
