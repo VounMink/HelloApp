@@ -87,19 +87,21 @@ export class Staff implements OnInit, AfterContentChecked {
     }
 
     performingASearchByAGivenValue() {
+        
         if (String(this.string__search_text) != 'undefined' && this.string__search_text.length != 0) {
             let value: number = this.string__search_text;
-            this.array__employee_facilities = this.array__employee_facilities.filter((obj: any) => {
+            this.array__employee_facilities = this.array__staff.filter((obj: any) => {
                 if (obj.fcs.includes(this.string__search_text)) {
                     return obj;
                 }
                 if (isNaN(value*1) == false) {
+                    
                     if (obj.office == (value*1)) {
                         return obj;
                     }
                 }
             });
-            this.getFillingTheTable();
+            this.getFillingTheTable(true);
         } else {
             this.array__employee_facilities = this.array__staff;
             this.getFillingTheTable();
@@ -154,7 +156,10 @@ export class Staff implements OnInit, AfterContentChecked {
         this.CHTSS.editEmployee.next(employee_index);
     }
 
-    getFillingTheTable() {
+    getFillingTheTable(search?: boolean) {
+        // if (search) {
+        //     this.number__current_page = 0;
+        // }
         if (this.array__employee_facilities.length > 0) {
             this.array__structured_data_for_a_table = this.createStructuringTheListOfEmployees(this.array__employee_facilities, 14);
             if ( this.array__structured_data_for_a_table.length != 0 ) {

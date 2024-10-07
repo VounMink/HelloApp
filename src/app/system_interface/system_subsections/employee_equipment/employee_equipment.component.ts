@@ -88,7 +88,7 @@ export class EmployeeEquipment implements OnInit, AfterContentChecked {
     performingASearchByAGivenValue() {
         if (String(this.string__search_text) != 'undefined' && this.string__search_text.length != 0) {
             let value: number = this.string__search_text;
-            this.array__bundle_objects = this.array__bundle_objects.filter((obj: any) => {
+            this.array__bundle_objects = this.array__bundle.filter((obj: any) => {
                 if (obj.fcs.includes(this.string__search_text) || obj.name.includes(this.string__search_text) || obj.type.includes(this.string__search_text)) return obj;
                 if (isNaN(value*1) == false) if (obj.office == (value*1)) return obj;
             });

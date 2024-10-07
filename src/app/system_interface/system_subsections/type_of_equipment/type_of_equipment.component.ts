@@ -30,7 +30,7 @@ export class TypeOfEquipment implements OnInit, AfterContentChecked {
 
     array__types_of_equipment: any = [];
     array__structured_data_for_a_table: any = [];
-    array__type_of_equipment: any = [];
+    array__all_types_of_equipment: any = [];
 
     number__the_sum_of_the_list_pages: number = 0;
     number__current_page: number = 0;
@@ -87,12 +87,12 @@ export class TypeOfEquipment implements OnInit, AfterContentChecked {
 
     performingASearchByAGivenValue() {
         if (String(this.string__search_text) != 'undefined' && this.string__search_text.length != 0) {
-            this.array__types_of_equipment = this.array__types_of_equipment.filter((obj: any) => {
+            this.array__types_of_equipment = this.array__all_types_of_equipment.filter((obj: any) => {
                 if (obj.type.includes(this.string__search_text)) return obj;
             });
             this.getFillingTheTable();
         } else {
-            this.array__types_of_equipment = this.array__type_of_equipment;
+            this.array__types_of_equipment = this.array__all_types_of_equipment;
             this.getFillingTheTable();
         }
     }
@@ -157,7 +157,7 @@ export class TypeOfEquipment implements OnInit, AfterContentChecked {
     getDataFromTheServer() {
         this.getServerRequests('GET', 'type_of_equipment', null, (e: any) => {
             this.dataService.type_of_equipment.next(this.array__data_from_the_server);
-            this.array__types_of_equipment = this.array__data_from_the_server = this.array__type_of_equipment = Array.from(JSON.parse(e));
+            this.array__types_of_equipment = this.array__data_from_the_server = this.array__all_types_of_equipment = Array.from(JSON.parse(e));
             this.getFillingTheTable();
         });
     }

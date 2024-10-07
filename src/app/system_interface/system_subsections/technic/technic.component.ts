@@ -87,7 +87,7 @@ export class Technic implements OnInit, AfterContentChecked {
 
     performingASearchByAGivenValue() {
         if (String(this.string__search_text) != 'undefined' && this.string__search_text.length != 0) {
-            this.array__equipment_facilities = this.array__equipment_facilities.filter((obj: any) => {
+            this.array__equipment_facilities = this.array__technic.filter((obj: any) => {
                 if (obj.name.includes(this.string__search_text) || obj.type.includes(this.string__search_text)) return obj;
             });
             this.getFillingTheTable();
